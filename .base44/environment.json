@@ -1,0 +1,27 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [
+    {
+      "name": "OPENAI_API_KEY",
+      "description": "OpenAI API key (platform.openai.com → API keys). Powers the /api/chat/openai proxy. Optional — app falls back to demo mode without it.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "ANTHROPIC_API_KEY",
+      "description": "Anthropic API key (console.anthropic.com → API keys). Powers the /api/chat/anthropic proxy. Optional.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "GOOGLE_API_KEY",
+      "description": "Google AI Studio API key (aistudio.google.com → Get API key). Powers the /api/chat/google proxy. Optional.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "XAI_API_KEY",
+      "description": "xAI/Grok API key (console.x.ai → API keys). Powers the /api/chat/grok proxy. Optional.",
+      "requiredAtBoot": false
+    }
+  ]
+}
