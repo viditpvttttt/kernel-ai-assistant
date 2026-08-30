@@ -54,16 +54,25 @@ const messageVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
+const SUGGESTIONS = [
+  { icon: "✦", label: "Brainstorm ideas for a project" },
+  { icon: "✎", label: "Help me write something" },
+  { icon: "⌘", label: "Explain a concept simply" },
+  { icon: "⊳", label: "Write or debug some code" },
+];
+
 export function MessageList({
   messages,
   onEditUser,
   onRegenerate,
   streamingText,
+  onPickSuggestion,
 }: {
   messages: ChatMessage[];
   onEditUser?: (id: string, text: string) => void;
   onRegenerate?: (id: string) => void;
   streamingText?: string | undefined;
+  onPickSuggestion?: (text: string) => void;
 }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
@@ -95,7 +104,7 @@ export function MessageList({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
-        className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center"
+        className="flex flex-1 flex-col items-center justify-center gap-6 px-6 text-center"
       >
         <motion.div
           animate={{ y: [0, -6, 0] }}
@@ -109,6 +118,23 @@ export function MessageList({
             Attach an image, drop a voice note, or just start typing.
           </p>
         </div>
+        {onPickSuggestion && (
+          <div className="grid w-full max-w-md grid-cols-1 gap-2 sm:grid-cols-2">
+            {SUGGESTIONS.map((s) => (
+              <button
+                key={s.label}
+                type="button"
+                onClick={() => onPickSuggestion(s.label)}
+                className="group flex items-center gap-2.5 rounded-xl border border-border bg-card/60 px-3.5 py-2.5 text-left text-sm text-muted-foreground transition-colors hover:border-border hover:bg-accent/50 hover:text-foreground"
+              >
+                <span className="font-mono text-xs text-muted-foreground/70 transition-colors group-hover:text-foreground">
+                  {s.icon}
+                </span>
+                <span className="truncate">{s.label}</span>
+              </button>
+            ))}
+          </div>
+        )}
       </motion.div>
     );
   }
@@ -151,7 +177,7 @@ export function MessageList({
                   </div>
                 )}
                 {m.content && !editing && (
-                  <div className="max-w-[85%] rounded-3xl bg-accent px-4 py-2.5 text-[15px] leading-relaxed whitespace-pre-wrap text-foreground">
+                  <div className="max-w-[85%] rounded-3xl bg-muted px-4 py-2.5 text-[15px] leading-relaxed whitespace-pre-wrap text-foreground">
                     {m.content}
                   </div>
                 )}

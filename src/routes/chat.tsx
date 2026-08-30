@@ -344,6 +344,7 @@ function ChatPage() {
               onEditUser={handleEditUser}
               onRegenerate={handleRegenerate}
               streamingText={streamingText}
+              onPickSuggestion={(text) => handleSend(text, [])}
             />
 
             {running && steps.length > 0 && <StepTrace steps={steps} />}
