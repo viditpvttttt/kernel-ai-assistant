@@ -257,3 +257,35 @@
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+@keyframes kernel-conic {
+  to {
+    --kernel-angle: 360deg;
+  }
+}
+
+@property --kernel-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Animated conic ring used behind cards and the chat composer. */
+@utility conic-spin {
+  background: conic-gradient(
+    from var(--kernel-angle),
+    transparent 0%,
+    var(--primary) 12%,
+    transparent 32%,
+    transparent 62%,
+    var(--primary) 74%,
+    transparent 92%
+  );
+  animation: kernel-conic 6s linear infinite;
+}
+
+/* Depth utilities for the 3D landing sections. */
+@utility scene-3d {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
