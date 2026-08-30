@@ -474,7 +474,7 @@ export const PROVIDER_PRESETS: Array<Omit<ApiKeyProfile, "id" | "apiKey">> = [
 /** Named, switchable API key profiles (multiple providers, BYOK, plus Kernel's own included keys). */
 export function useApiKeys() {
   const [keys, setKeys, hydratedKeys] = useLocal<ApiKeyProfile[]>(KEYS.apiKeys, defaultApiKeys(), ["apiKey"]);
-  const [activeId, setActiveId, hydratedActive] = useLocal<string>(KEYS.activeApiKey, "builtin-openai");
+  const [activeId, setActiveId, hydratedActive] = useLocal<string>(KEYS.activeApiKey, "builtin-google");
 
   // One-time migration for browsers that already had keys saved before built-in profiles existed.
   useEffect(() => {
