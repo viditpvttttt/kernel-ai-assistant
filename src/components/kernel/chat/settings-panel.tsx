@@ -92,7 +92,7 @@ export function SettingsPanel({
         <DialogHeader className="border-b border-border px-5 py-4">
           <DialogTitle>Settings</DialogTitle>
           <DialogDescription>
-            Bring your own keys. Everything here is stored locally in your browser, not on a server.
+            Models are included with Kernel. Everything you configure here stays in your browser, not on a server.
           </DialogDescription>
         </DialogHeader>
 

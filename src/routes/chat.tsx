@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
 import { Ambience } from "@/components/kernel/ambience";
+import { GradientBorder } from "@/components/kernel/fx/gradient-border";
+import { ChatWelcome } from "@/components/kernel/chat/welcome";
 import { KernelLogo } from "@/components/kernel/logo";
 import { ThemeToggle } from "@/components/kernel/theme-toggle";
 import { CommandPalette } from "@/components/kernel/chat/command-palette";
