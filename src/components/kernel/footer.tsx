@@ -13,8 +13,8 @@ export function SiteFooter() {
           <div className="max-w-xs">
             <KernelLogo />
             <p className="mt-5 text-sm text-muted-foreground">
-              Kernel runs on the API keys you already own. Nothing leaves your machine unless you
-              point it somewhere.
+              Kernel ships with the models included — Claude, GPT-5.5, Gemini and Grok run on
+              Substrate's capacity. Bring your own key only if you want to.
             </p>
           </div>
           <div className="flex gap-16">
@@ -38,7 +38,7 @@ export function SiteFooter() {
           </div>
         </div>
         <p className="mt-16 font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
-          Kernel · bring your own keys
+          Kernel · a Substrate product
         </p>
       </div>
     </footer>

@@ -7,6 +7,7 @@ import { ThemeToggle } from "./theme-toggle";
 import { cn } from "@/lib/utils";
 
 const links = [
+  { label: "Models", href: "#models" },
   { label: "Harness", href: "#harness" },
   { label: "Connectors", href: "#connectors" },
   { label: "Skills", href: "#skills" },
@@ -33,7 +34,7 @@ export function SiteNav() {
             : "border border-transparent",
         )}
       >
-        <Link to="/" aria-label="Kernel home">
+        <Link to="/" aria-label="Kernel by Substrate home">
           <KernelLogo />
         </Link>
         <div className="hidden items-center gap-7 md:flex">
@@ -53,7 +54,7 @@ export function SiteNav() {
             to="/chat"
             className="rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground transition-transform hover:scale-[1.03]"
           >
-            Open Kernel
+            Start free
           </Link>
         </div>
       </nav>
