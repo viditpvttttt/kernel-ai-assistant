@@ -1,10 +1,17 @@
-import { ArrowUp, Image as ImageIcon, Mic, Paperclip, Square, X } from "lucide-react";
+import { ArrowUp, ChevronDown, Mic, Paperclip, Plus, Square, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 import type { ChatAttachment } from "@/lib/agent";
+import { MODEL_PRESETS, type ProviderPreset } from "@/lib/kernel-store";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
 function fileToDataUrl(file: File): Promise<string> {
@@ -21,11 +28,17 @@ export function Composer({
   streaming,
   onSend,
   onStop,
+  model,
+  modelPreset,
+  onModelChange,
 }: {
   disabled?: boolean;
   streaming?: boolean;
   onSend: (text: string, attachments: ChatAttachment[]) => void;
   onStop?: () => void;
+  model: string;
+  modelPreset: ProviderPreset;
+  onModelChange: (id: string) => void;
 }) {
   const [text, setText] = useState("");
   const [attachments, setAttachments] = useState<ChatAttachment[]>([]);
@@ -34,6 +47,9 @@ export function Composer({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<BlobPart[]>([]);
+
+  const models = MODEL_PRESETS[modelPreset] ?? [];
+  const currentModel = models.find((m) => m.id === model) ?? models[0];
 
   useEffect(() => {
     const el = textareaRef.current;
@@ -77,7 +93,7 @@ export function Composer({
       recorderRef.current = recorder;
       setRecording(true);
     } catch {
-      // mic denied or unavailable — silently no-op, the button just won't start recording
+      // mic denied or unavailable
     }
   }
 
@@ -94,7 +110,7 @@ export function Composer({
   }
 
   return (
-    <div className="rounded-3xl border border-border bg-card p-3 shadow-sm">
+    <div className="rounded-3xl border border-border bg-card p-2.5 shadow-sm transition-shadow focus-within:shadow-md">
       <AnimatePresence>
         {attachments.length > 0 && (
           <motion.div
@@ -165,8 +181,43 @@ export function Composer({
             onClick={() => fileInputRef.current?.click()}
             aria-label="Attach image"
           >
-            <ImageIcon className="h-4 w-4" />
+            <Plus className="h-4 w-4" />
           </Button>
+          {attachments.length === 0 && (
+            <span className="hidden items-center gap-1 pl-1 text-[11px] text-muted-foreground sm:flex">
+              <Paperclip className="h-3 w-3" /> Shift+Enter for a new line
+            </span>
+          )}
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          {/* Model picker */}
+          {currentModel && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                >
+                  {currentModel.label}
+                  <ChevronDown className="h-3 w-3" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {models.map((m) => (
+                  <DropdownMenuItem
+                    key={m.id}
+                    onClick={() => onModelChange(m.id)}
+                    className={cn("flex flex-col items-start", m.id === model && "font-medium")}
+                  >
+                    <span>{m.label}</span>
+                    <span className="text-xs text-muted-foreground">{m.note}</span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+
           <Button
             type="button"
             variant="ghost"
@@ -177,57 +228,52 @@ export function Composer({
           >
             {recording ? <Square className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
           </Button>
-          {attachments.length === 0 && (
-            <span className="hidden items-center gap-1 pl-1 text-[11px] text-muted-foreground sm:flex">
-              <Paperclip className="h-3 w-3" /> Shift+Enter for a new line
-            </span>
-          )}
-        </div>
 
-        <motion.div layout transition={{ duration: 0.15 }}>
-          {streaming ? (
-            <motion.div
-              initial={{ scale: 0.7, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
-            >
-              <Button
-                type="button"
-                size="icon"
-                variant="secondary"
-                className="h-8 w-8 shrink-0 rounded-full"
-                onClick={onStop}
-                aria-label="Stop generating"
+          <motion.div layout transition={{ duration: 0.15 }}>
+            {streaming ? (
+              <motion.div
+                initial={{ scale: 0.7, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
-                <motion.span
-                  className="flex h-full w-full items-center justify-center"
-                  animate={{ scale: [1, 0.85, 1] }}
-                  transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="secondary"
+                  className="h-8 w-8 shrink-0 rounded-full"
+                  onClick={onStop}
+                  aria-label="Stop generating"
                 >
-                  <Square className="h-3.5 w-3.5 fill-current" />
-                </motion.span>
-              </Button>
-            </motion.div>
-          ) : (
-            <motion.div
-              initial={{ scale: 0.7, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              whileTap={{ scale: 0.88 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
-            >
-              <Button
-                type="button"
-                size="icon"
-                className="h-8 w-8 shrink-0 rounded-full"
-                disabled={disabled || (!text.trim() && attachments.length === 0)}
-                onClick={handleSend}
-                aria-label="Send"
+                  <motion.span
+                    className="flex h-full w-full items-center justify-center"
+                    animate={{ scale: [1, 0.85, 1] }}
+                    transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <Square className="h-3.5 w-3.5 fill-current" />
+                  </motion.span>
+                </Button>
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ scale: 0.7, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                whileTap={{ scale: 0.88 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
-                <ArrowUp className="h-4 w-4" />
-              </Button>
-            </motion.div>
-          )}
-        </motion.div>
+                <Button
+                  type="button"
+                  size="icon"
+                  className="h-8 w-8 shrink-0 rounded-full"
+                  disabled={disabled || (!text.trim() && attachments.length === 0)}
+                  onClick={handleSend}
+                  aria-label="Send"
+                >
+                  <ArrowUp className="h-4 w-4" />
+                </Button>
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
       </div>
     </div>
   );

@@ -106,17 +106,8 @@ export function MessageList({
         transition={{ duration: 0.4 }}
         className="flex flex-1 flex-col items-center justify-center gap-6 px-6 text-center"
       >
-        <motion.div
-          animate={{ y: [0, -6, 0] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <KernelMark className="h-10 w-10 opacity-70" />
-        </motion.div>
         <div>
-          <p className="text-lg font-medium">What are we working on?</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Attach an image, drop a voice note, or just start typing.
-          </p>
+          <p className="text-2xl font-medium text-foreground">Ready when you are.</p>
         </div>
         {onPickSuggestion && (
           <div className="grid w-full max-w-md grid-cols-1 gap-2 sm:grid-cols-2">

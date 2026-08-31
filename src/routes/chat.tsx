@@ -260,10 +260,9 @@ function ChatPage() {
       <Ambience intensity="soft" className="opacity-50" />
       <header className="relative z-10 flex items-center justify-between border-b border-border bg-background/70 px-4 py-2.5 backdrop-blur-xl">
         <Link to="/" aria-label="Kernel home">
-          <KernelLogo />
+          <KernelLogo byline={false} />
         </Link>
         <div className="flex items-center gap-1">
-          {active && <ModelPicker value={active.model} preset={provider.preset} onChange={handleModelChange} />}
           <PersonaPicker value={personaId} onChange={setPersonaId} />
           {apiKeys.keys.length > 1 && (
             <Select value={apiKeys.activeId} onValueChange={apiKeys.setActiveId}>
@@ -279,10 +278,13 @@ function ChatPage() {
               </SelectContent>
             </Select>
           )}
-          <SettingsPanel open={settingsOpen} onOpenChange={setSettingsOpen} jumpToSection={settingsSection} />
           <ThemeToggle />
         </div>
       </header>
+
+      <div className="hidden">
+        <SettingsPanel open={settingsOpen} onOpenChange={setSettingsOpen} jumpToSection={settingsSection} />
+      </div>
 
       <CommandPalette
         threads={threads}
@@ -310,6 +312,10 @@ function ChatPage() {
           }}
           onNew={handleNew}
           onDelete={handleDelete}
+          onOpenSettings={(section) => {
+            if (section) setSettingsSection(section as SettingsSection);
+            setSettingsOpen(true);
+          }}
         />
 
         <div className="flex flex-1 flex-col overflow-hidden">
@@ -350,7 +356,15 @@ function ChatPage() {
             {running && steps.length > 0 && <StepTrace steps={steps} />}
 
             <div className={isEmpty ? "mx-auto w-full max-w-3xl px-4 pb-8 sm:px-6" : "px-4 pb-6 sm:px-6"}>
-              <Composer disabled={!active} streaming={running} onSend={handleSend} onStop={handleStop} />
+              <Composer
+                disabled={!active}
+                streaming={running}
+                onSend={handleSend}
+                onStop={handleStop}
+                model={active?.model ?? MODEL_PRESETS[provider.preset][0]?.id ?? ""}
+                modelPreset={provider.preset}
+                onModelChange={handleModelChange}
+              />
               <p className="mt-2 text-center text-[11px] text-muted-foreground">
                 Kernel can make mistakes. Verify important information.
               </p>
