@@ -338,20 +338,26 @@ function ChatPage() {
             return null;
           })()}
 
-          <div className={isEmpty ? "flex flex-1 flex-col justify-center" : "flex flex-1 flex-col overflow-hidden"}>
-            <MessageList
-              messages={active?.messages ?? []}
-              onEditUser={handleEditUser}
-              onRegenerate={handleRegenerate}
-              streamingText={streamingText}
-            />
+          <div className={isEmpty ? "flex flex-1 flex-col justify-center overflow-y-auto py-10" : "flex flex-1 flex-col overflow-hidden"}>
+            {isEmpty ? (
+              <ChatWelcome onPick={(prompt) => void handleSend(prompt, [])} />
+            ) : (
+              <MessageList
+                messages={active?.messages ?? []}
+                onEditUser={handleEditUser}
+                onRegenerate={handleRegenerate}
+                streamingText={streamingText}
+              />
+            )}
 
             {running && steps.length > 0 && <StepTrace steps={steps} />}
 
             <div className={isEmpty ? "mx-auto w-full max-w-3xl px-4 pb-8 sm:px-6" : "px-4 pb-6 sm:px-6"}>
-              <Composer disabled={!active} streaming={running} onSend={handleSend} onStop={handleStop} />
+              <GradientBorder active={running} radius="rounded-3xl">
+                <Composer disabled={!active} streaming={running} onSend={handleSend} onStop={handleStop} />
+              </GradientBorder>
               <p className="mt-2 text-center text-[11px] text-muted-foreground">
-                Kernel can make mistakes. Verify important information.
+                Kernel by Substrate can make mistakes. Verify important information.
               </p>
             </div>
           </div>
