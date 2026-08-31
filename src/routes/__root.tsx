@@ -88,9 +88,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Kernel" },
-      { name: "description", content: "The agentic multimodal AI workspace you run on your own keys." },
-      { name: "author", content: "Kernel" },
+      { title: "Kernel by Substrate" },
+      { name: "description", content: "Kernel by Substrate — agentic multimodal AI with Claude, GPT-5.5, Gemini and Grok included." },
+      { name: "author", content: "Substrate" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
