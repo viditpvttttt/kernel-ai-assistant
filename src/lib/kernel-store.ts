@@ -481,8 +481,14 @@ export function useApiKeys() {
     if (!hydratedKeys) return;
     const missing = BUILTIN_PROFILES.filter((b) => !keys.some((k) => k.id === b.id));
     if (missing.length > 0) setKeys((prev) => [...missing, ...prev]);
+    // If the active profile is a bring-your-own-key one with no key entered, fall back to the
+    // included Google profile so the chat works out of the box instead of running in demo mode.
+    const activeProfile = keys.find((k) => k.id === activeId);
+    if (activeProfile && !activeProfile.apiKey && !activeProfile.builtin) {
+      setActiveId("builtin-google");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hydratedKeys]);
+  }, [hydratedKeys, hydratedActive]);
 
   const active = keys.find((k) => k.id === activeId) ?? keys[0] ?? defaultApiKeyProfile();
 

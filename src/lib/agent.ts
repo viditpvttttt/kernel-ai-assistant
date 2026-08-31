@@ -469,7 +469,11 @@ async function runOpenAiLoop(opts: RunOpts): Promise<{ text: string; attachments
       }
       const errBody = await res.text().catch(() => res.statusText);
       onStep({ kind: "error", id: stepId(), message: `${res.status}: ${errBody.slice(0, 300)}` });
-      throw new Error(`Provider error ${res.status}`);
+      // Retry once without tools if the provider rejected the tool definitions.
+      if (res.status === 400 && tools.length > 0) {
+        return runOpenAiLoop({ ...opts, tools: [] });
+      }
+      throw new Error(`Provider error ${res.status}: ${errBody.slice(0, 200)}`);
     }
     if (!res.body) throw new Error("No response stream from provider.");
 
