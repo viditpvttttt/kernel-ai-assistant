@@ -139,9 +139,9 @@ const KEYS = {
 
 export const MODEL_PRESETS: Record<ProviderPreset, Array<{ id: string; label: string; note: string }>> = {
   google: [
-    { id: "google/gemini-3.7-flash", label: "Gemini 3.7 Flash", note: "fast · vision · audio" },
-    { id: "google/gemini-3.7-pro", label: "Gemini 3.7 Pro", note: "deep reasoning" },
-    { id: "google/gemini-2.5-flash-image", label: "Nano Banana", note: "image generation" },
+    { id: "gemini-3.6-flash", label: "Gemini 3.6 Flash", note: "fast · vision" },
+    { id: "gemini-3.1-pro-preview", label: "Gemini 3.1 Pro", note: "deep reasoning" },
+    { id: "gemini-2.5-flash-image", label: "Nano Banana", note: "image generation" },
   ],
   openai: [
     { id: "gpt-5.5", label: "GPT-5.5", note: "flagship, agentic" },

@@ -1,4 +1,4 @@
-import { MODEL_PRESETS, type ProviderKind } from "@/lib/kernel-store";
+import { MODEL_PRESETS, type ProviderPreset } from "@/lib/kernel-store";
 import {
   Select,
   SelectContent,
@@ -9,14 +9,14 @@ import {
 
 export function ModelPicker({
   value,
-  kind,
+  preset,
   onChange,
 }: {
   value: string;
-  kind: ProviderKind;
+  preset: ProviderPreset;
   onChange: (id: string) => void;
 }) {
-  const models = MODEL_PRESETS[kind];
+  const models = MODEL_PRESETS[preset];
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="h-8 w-auto gap-2 border-none bg-transparent px-2 text-sm shadow-none focus:ring-0">

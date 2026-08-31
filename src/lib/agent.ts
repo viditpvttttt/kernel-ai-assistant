@@ -361,7 +361,9 @@ function toOpenAiMessages(messages: ChatMessage[], system: string) {
           ...images.map((img) => ({ type: "image_url", image_url: { url: img.dataUrl } })),
         ],
       });
-    } else {
+    } else if (m.content) {
+      // Skip empty-content messages (e.g. aborted assistant turns) — they're
+      // invalid in the OpenAI wire format and cause provider 400s.
       out.push({ role: m.role, content: m.content });
     }
   }

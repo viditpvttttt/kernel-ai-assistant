@@ -85,7 +85,7 @@ function ChatPage() {
   useEffect(() => {
     if (!hydrated) return;
     if (threads.length === 0) {
-      const t = newThread(MODEL_PRESETS[provider.kind][0]?.id);
+      const t = newThread(MODEL_PRESETS[provider.preset][0]?.id);
       upsert(t);
       setActiveId(t.id);
     } else if (!activeId && threads[0]) {
@@ -96,20 +96,20 @@ function ChatPage() {
 
   const active = threads.find((t) => t.id === activeId) ?? null;
 
-  // Keep the selected model in sync with the active provider's wire format when the user switches keys.
+  // Keep the selected model in sync with the active provider's preset when the user switches keys.
   useEffect(() => {
     if (!active) return;
-    const validModels = MODEL_PRESETS[provider.kind];
+    const validModels = MODEL_PRESETS[provider.preset];
     if (!validModels.some((m) => m.id === active.model) && validModels[0]) {
       upsert({ ...active, model: validModels[0].id });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [provider.kind, active?.id]);
+  }, [provider.preset, active?.id]);
 
   // Model validity + step trace visibility are still owned here; message scrolling is handled inside MessageList.
 
   function handleNew() {
-    const t = newThread(active?.model ?? MODEL_PRESETS[provider.kind][0]?.id);
+    const t = newThread(active?.model ?? MODEL_PRESETS[provider.preset][0]?.id);
     upsert(t);
     setActiveId(t.id);
     setSteps([]);
@@ -263,7 +263,7 @@ function ChatPage() {
           <KernelLogo />
         </Link>
         <div className="flex items-center gap-1">
-          {active && <ModelPicker value={active.model} kind={provider.kind} onChange={handleModelChange} />}
+          {active && <ModelPicker value={active.model} preset={provider.preset} onChange={handleModelChange} />}
           <PersonaPicker value={personaId} onChange={setPersonaId} />
           {apiKeys.keys.length > 1 && (
             <Select value={apiKeys.activeId} onValueChange={apiKeys.setActiveId}>
