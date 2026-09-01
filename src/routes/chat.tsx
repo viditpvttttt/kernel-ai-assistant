@@ -322,6 +322,14 @@ function ChatPage() {
           {(() => {
             if (provider.builtin) {
               const ready = builtinStatus?.[provider.preset as keyof typeof builtinStatus];
+              if (ready === false && builtinStatus?.kernel) {
+                return (
+                  <div className="border-b border-border bg-primary/10 px-4 py-1.5 text-center text-xs text-muted-foreground">
+                    "{provider.name}" has no dedicated key here — running on Kernel's free models
+                    instead, so replies are real.
+                  </div>
+                );
+              }
               if (ready === false) {
                 return (
                   <div className="border-b border-border bg-amber-500/10 px-4 py-1.5 text-center text-xs text-amber-700 dark:text-amber-400">
