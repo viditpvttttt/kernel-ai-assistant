@@ -540,3 +540,41 @@ export function useApiKeys() {
     hydrated: hydratedKeys && hydratedActive,
   };
 }
+
+/** Nearest Kernel-free-tier equivalent for a model from another provider's list. */
+const KERNEL_EQUIVALENT: Record<string, string> = {
+  "claude-opus-5": "openai/gpt-5.5",
+  "claude-fable-5": "openai/gpt-5.5",
+  "claude-sonnet-5": "openai/gpt-5.6-terra",
+  "claude-haiku-4-5-20251001": "openai/gpt-5.6-luna",
+  "gpt-5.5": "openai/gpt-5.5",
+  "gpt-5.4": "openai/gpt-5.6-terra",
+  "gpt-5.4-mini": "openai/gpt-5.6-luna",
+  o3: "google/gemini-3.1-pro-preview",
+  "gpt-image-2": "google/gemini-2.5-flash-image",
+  "grok-4.6": "openai/gpt-5.5",
+  "grok-4.3": "openai/gpt-5.6-terra",
+  "grok-code-fast-1": "openai/gpt-5.6-luna",
+  "google/gemini-3.7-pro": "google/gemini-3.1-pro-preview",
+};
+
+/**
+ * Included providers whose own env var isn't set on this deployment silently run on
+ * Kernel's free gateway instead of dropping into the scripted demo trace.
+ */
+export function resolveProvider(
+  provider: ApiKeyProfile,
+  model: string,
+  status: BuiltinStatus | null,
+): { provider: ApiKeyProfile; model: string; fellBack: boolean } {
+  const kernelProfile = BUILTIN_PROFILES[0]!;
+  if (!provider.builtin || provider.preset === "kernel" || !status?.kernel) {
+    return { provider, model, fellBack: false };
+  }
+  const ready = (status as Record<string, boolean | undefined>)[provider.preset];
+  if (ready) return { provider, model, fellBack: false };
+  const mapped =
+    KERNEL_EQUIVALENT[model] ??
+    (MODEL_PRESETS.kernel.some((m) => m.id === model) ? model : MODEL_PRESETS.kernel[0]!.id);
+  return { provider: kernelProfile, model: mapped, fellBack: true };
+}
