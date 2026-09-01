@@ -375,7 +375,13 @@ export function usePlugins() {
   return useLocal<Plugin[]>(KEYS.plugins, DEFAULT_PLUGINS);
 }
 
-export type BuiltinStatus = { openai: boolean; anthropic: boolean; google: boolean; grok: boolean };
+export type BuiltinStatus = {
+  kernel: boolean;
+  openai: boolean;
+  anthropic: boolean;
+  google: boolean;
+  grok: boolean;
+};
 
 /** Asks the server which built-in provider keys are actually configured on this deployment. */
 export function useBuiltinStatus() {
