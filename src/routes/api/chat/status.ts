@@ -10,6 +10,7 @@ export const Route = createFileRoute("/api/chat/status")({
     handlers: {
       GET: async () => {
         return Response.json({
+          kernel: Boolean(process.env["LOVABLE_API_KEY"]),
           openai: Boolean(process.env["OPENAI_API_KEY"]),
           anthropic: Boolean(process.env["ANTHROPIC_API_KEY"]),
           google: Boolean(process.env["GOOGLE_API_KEY"]),
