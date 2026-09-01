@@ -37,6 +37,7 @@ import {
 import {
   MODEL_PRESETS,
   newThread,
+  resolveProvider,
   useApiKeys,
   useBuiltinStatus,
   useConnectors,
