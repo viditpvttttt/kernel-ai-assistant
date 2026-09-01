@@ -169,11 +169,14 @@ function ChatPage() {
       )
     ).flat();
 
+    // Included providers whose own key isn't configured here run on Kernel's free gateway.
+    const resolved = resolveProvider(provider, thread.model, builtinStatus);
+
     const tools = [
       ...(isPluginOn("calculate") ? [calculatorTool] : []),
       ...(isPluginOn("fetch_url") ? [fetchUrlTool] : []),
       ...(isPluginOn("code_interpreter") ? [codeInterpreterTool] : []),
-      ...(isPluginOn("generate_image") ? [imageGenerationTool(provider)] : []),
+      ...(isPluginOn("generate_image") ? [imageGenerationTool(resolved.provider)] : []),
       ...(isPluginOn("file_search") ? [fileSearchTool(files)] : []),
       ...apiConnectors.map(connectorTool),
       ...mcpTools,
@@ -182,9 +185,9 @@ function ChatPage() {
     try {
       const { text: answerText, attachments } = await runAgent({
         messages: history,
-        model: thread.model,
+        model: resolved.model,
         system: buildSystemPrompt(persona.systemPrompt, skills),
-        provider,
+        provider: resolved.provider,
         tools,
         signal: controller.signal,
         onStep: (step) => setSteps((prev) => [...prev, step]),
