@@ -17,7 +17,7 @@ export type Thread = {
 export type ProviderKind = "openai" | "anthropic";
 
 /** Which curated model list + label to show — distinct from `kind` since several presets share the OpenAI wire format. */
-export type ProviderPreset = "openai" | "anthropic" | "google" | "grok" | "custom";
+export type ProviderPreset = "kernel" | "openai" | "anthropic" | "google" | "grok" | "custom";
 
 export type ApiKeyProfile = {
   id: string;
@@ -138,6 +138,16 @@ const KEYS = {
 } as const;
 
 export const MODEL_PRESETS: Record<ProviderPreset, Array<{ id: string; label: string; note: string }>> = {
+  // Kernel's free tier — routed through Kernel's server, no key required.
+  kernel: [
+    { id: "google/gemini-3.7-flash", label: "Gemini 3.7 Flash", note: "free · fast · vision" },
+    { id: "google/gemini-3.1-pro-preview", label: "Gemini 3.1 Pro", note: "free · deep reasoning" },
+    { id: "openai/gpt-5.6-terra", label: "GPT-5.6 Terra", note: "free · balanced" },
+    { id: "openai/gpt-5.6-luna", label: "GPT-5.6 Luna", note: "free · fastest" },
+    { id: "openai/gpt-5.5", label: "GPT-5.5", note: "free · frontier" },
+    { id: "google/gemini-3.1-flash-lite", label: "Gemini 3.1 Flash Lite", note: "free · high volume" },
+    { id: "google/gemini-2.5-flash-image", label: "Nano Banana", note: "free · image generation" },
+  ],
   google: [
     { id: "google/gemini-3.7-flash", label: "Gemini 3.7 Flash", note: "fast · vision · audio" },
     { id: "google/gemini-3.7-pro", label: "Gemini 3.7 Pro", note: "deep reasoning" },
@@ -166,6 +176,7 @@ export const MODEL_PRESETS: Record<ProviderPreset, Array<{ id: string; label: st
 
 /** Flat list kept for back-compat call sites; prefer MODEL_PRESETS[preset] for a given profile. */
 export const MODELS = [
+  ...MODEL_PRESETS.kernel,
   ...MODEL_PRESETS.google,
   ...MODEL_PRESETS.openai,
   ...MODEL_PRESETS.anthropic,
@@ -417,6 +428,15 @@ function defaultApiKeyProfile(): ApiKeyProfile {
  *  Each only actually works once the matching env var is set on the deployment (see /api/chat/status). */
 export const BUILTIN_PROFILES: ApiKeyProfile[] = [
   {
+    id: "builtin-kernel",
+    name: "Kernel free models",
+    kind: "openai",
+    preset: "kernel",
+    baseUrl: "/api/chat/kernel",
+    apiKey: "",
+    builtin: true,
+  },
+  {
     id: "builtin-openai",
     name: "OpenAI (included)",
     kind: "openai",
@@ -474,7 +494,7 @@ export const PROVIDER_PRESETS: Array<Omit<ApiKeyProfile, "id" | "apiKey">> = [
 /** Named, switchable API key profiles (multiple providers, BYOK, plus Kernel's own included keys). */
 export function useApiKeys() {
   const [keys, setKeys, hydratedKeys] = useLocal<ApiKeyProfile[]>(KEYS.apiKeys, defaultApiKeys(), ["apiKey"]);
-  const [activeId, setActiveId, hydratedActive] = useLocal<string>(KEYS.activeApiKey, "builtin-openai");
+  const [activeId, setActiveId, hydratedActive] = useLocal<string>(KEYS.activeApiKey, "builtin-kernel");
 
   // One-time migration for browsers that already had keys saved before built-in profiles existed.
   useEffect(() => {

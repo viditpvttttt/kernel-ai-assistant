@@ -15,6 +15,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ApiChatAnthropicRouteImport } from './routes/api/chat/anthropic'
 import { Route as ApiChatGoogleRouteImport } from './routes/api/chat/google'
 import { Route as ApiChatGrokRouteImport } from './routes/api/chat/grok'
+import { Route as ApiChatKernelRouteImport } from './routes/api/chat/kernel'
 import { Route as ApiChatOpenaiRouteImport } from './routes/api/chat/openai'
 import { Route as ApiChatStatusRouteImport } from './routes/api/chat/status'
 
@@ -48,6 +49,11 @@ const ApiChatGrokRoute = ApiChatGrokRouteImport.update({
   path: '/api/chat/grok',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiChatKernelRoute = ApiChatKernelRouteImport.update({
+  id: '/api/chat/kernel',
+  path: '/api/chat/kernel',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiChatOpenaiRoute = ApiChatOpenaiRouteImport.update({
   id: '/api/chat/openai',
   path: '/api/chat/openai',
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/api/chat/anthropic': typeof ApiChatAnthropicRoute
   '/api/chat/google': typeof ApiChatGoogleRoute
   '/api/chat/grok': typeof ApiChatGrokRoute
+  '/api/chat/kernel': typeof ApiChatKernelRoute
   '/api/chat/openai': typeof ApiChatOpenaiRoute
   '/api/chat/status': typeof ApiChatStatusRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/api/chat/anthropic': typeof ApiChatAnthropicRoute
   '/api/chat/google': typeof ApiChatGoogleRoute
   '/api/chat/grok': typeof ApiChatGrokRoute
+  '/api/chat/kernel': typeof ApiChatKernelRoute
   '/api/chat/openai': typeof ApiChatOpenaiRoute
   '/api/chat/status': typeof ApiChatStatusRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/api/chat/anthropic': typeof ApiChatAnthropicRoute
   '/api/chat/google': typeof ApiChatGoogleRoute
   '/api/chat/grok': typeof ApiChatGrokRoute
+  '/api/chat/kernel': typeof ApiChatKernelRoute
   '/api/chat/openai': typeof ApiChatOpenaiRoute
   '/api/chat/status': typeof ApiChatStatusRoute
 }
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/api/chat/anthropic'
     | '/api/chat/google'
     | '/api/chat/grok'
+    | '/api/chat/kernel'
     | '/api/chat/openai'
     | '/api/chat/status'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/api/chat/anthropic'
     | '/api/chat/google'
     | '/api/chat/grok'
+    | '/api/chat/kernel'
     | '/api/chat/openai'
     | '/api/chat/status'
   id:
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/api/chat/anthropic'
     | '/api/chat/google'
     | '/api/chat/grok'
+    | '/api/chat/kernel'
     | '/api/chat/openai'
     | '/api/chat/status'
   fileRoutesById: FileRoutesById
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   ApiChatAnthropicRoute: typeof ApiChatAnthropicRoute
   ApiChatGoogleRoute: typeof ApiChatGoogleRoute
   ApiChatGrokRoute: typeof ApiChatGrokRoute
+  ApiChatKernelRoute: typeof ApiChatKernelRoute
   ApiChatOpenaiRoute: typeof ApiChatOpenaiRoute
   ApiChatStatusRoute: typeof ApiChatStatusRoute
 }
@@ -178,6 +191,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatGrokRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/chat/kernel': {
+      id: '/api/chat/kernel'
+      path: '/api/chat/kernel'
+      fullPath: '/api/chat/kernel'
+      preLoaderRoute: typeof ApiChatKernelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/chat/openai': {
       id: '/api/chat/openai'
       path: '/api/chat/openai'
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiChatAnthropicRoute: ApiChatAnthropicRoute,
   ApiChatGoogleRoute: ApiChatGoogleRoute,
   ApiChatGrokRoute: ApiChatGrokRoute,
+  ApiChatKernelRoute: ApiChatKernelRoute,
   ApiChatOpenaiRoute: ApiChatOpenaiRoute,
   ApiChatStatusRoute: ApiChatStatusRoute,
 }
