@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 const STORAGE_KEY = "kernel-theme";
 
 export function ThemeToggle() {
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    const isDark = stored === "dark";
+    const isDark = stored !== "light";
     setDark(isDark);
     document.documentElement.classList.toggle("dark", isDark);
   }, []);
