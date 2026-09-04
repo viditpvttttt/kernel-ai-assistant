@@ -8,6 +8,10 @@ import { ModelOrbit } from "@/components/kernel/fx/model-orbit";
 import { Depth, Tilt3D } from "@/components/kernel/fx/tilt";
 import { Hero } from "@/components/kernel/hero";
 import { ConnectorMarquee } from "@/components/kernel/marquee";
+import { BoxReveal } from "@/components/kernel/fx/box-reveal";
+import { KernelCube } from "@/components/kernel/fx/kernel-cube";
+import { ScrambleText } from "@/components/kernel/fx/scramble-text";
+import { ScrollProgress } from "@/components/kernel/fx/scroll-progress";
 import { Rise, ScrollRevealText } from "@/components/kernel/reveal";
 import { SiteNav } from "@/components/kernel/site-nav";
 import { SkillCarousel } from "@/components/kernel/skill-carousel";
@@ -61,6 +65,7 @@ const capabilities = [
 function Index() {
   return (
     <>
+      <ScrollProgress />
       <CursorSpotlight />
       <SiteNav />
       <main>
@@ -73,14 +78,18 @@ function Index() {
           />
         </section>
 
-        <section id="models" className="rule-x relative overflow-hidden py-24">
+        <section id="models" className="rule-x grain-veil relative overflow-hidden py-24">
           <Ambience intensity="soft" />
           <div className="relative mx-auto max-w-5xl px-6 text-center">
             <Rise>
-              <p className="eyebrow">No keys required</p>
-              <h2 className="mx-auto mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
+              <p className="eyebrow">
+                <ScrambleText text="No keys required" />
+              </p>
+              <BoxReveal>
+                <h2 className="mx-auto mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
                 Every frontier model, already switched on.
               </h2>
+              </BoxReveal>
               <p className="mx-auto mt-6 max-w-lg text-muted-foreground">
                 Substrate supplies the capacity. Open Kernel and start a chat — swap between Claude,
                 GPT-5.5, Gemini and Grok mid-conversation, on us. Add your own key later if you
@@ -96,22 +105,30 @@ function Index() {
         <section id="harness" className="rule-x">
           <div className="mx-auto max-w-5xl px-6 pt-24">
             <Rise>
-              <p className="eyebrow">The harness</p>
-              <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
+              <p className="eyebrow">
+                <ScrambleText text="The harness" />
+              </p>
+              <BoxReveal>
+                <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
                 A loop, not a reply box.
               </h2>
+              </BoxReveal>
             </Rise>
           </div>
           <StickyStack />
         </section>
 
-        <section id="capabilities" className="rule-x py-24">
+        <section id="capabilities" className="rule-x grain-veil py-24">
           <div className="mx-auto max-w-5xl px-6">
             <Rise>
-              <p className="eyebrow">Loaded in</p>
-              <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
+              <p className="eyebrow">
+                <ScrambleText text="Loaded in" />
+              </p>
+              <BoxReveal>
+                <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
                 Everything the other assistants ship, in one surface.
               </h2>
+              </BoxReveal>
             </Rise>
             <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {capabilities.map((c, i) => (
@@ -137,10 +154,14 @@ function Index() {
           <Ambience intensity="soft" />
           <div className="relative mx-auto max-w-5xl px-6">
             <Rise>
-              <p className="eyebrow">Connectors</p>
-              <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
+              <p className="eyebrow">
+                <ScrambleText text="Connectors" />
+              </p>
+              <BoxReveal>
+                <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
                 Every model. Every tool you already use.
               </h2>
+              </BoxReveal>
               <p className="mt-6 max-w-lg text-muted-foreground">
                 Authorise once and every connector becomes a tool the agent can call — REST, webhooks
                 or a full MCP server, scoped per chat.
@@ -155,10 +176,14 @@ function Index() {
         <section id="skills" className="rule-x py-24">
           <div className="mx-auto max-w-5xl px-6">
             <Rise>
-              <p className="eyebrow">Skills · Automations · Plugins</p>
-              <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
+              <p className="eyebrow">
+                <ScrambleText text="Skills · Automations · Plugins" />
+              </p>
+              <BoxReveal>
+                <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
                 Teach it once. It keeps the lesson.
               </h2>
+              </BoxReveal>
             </Rise>
             <div className="mt-14">
               <SkillCarousel />
@@ -166,20 +191,25 @@ function Index() {
           </div>
         </section>
 
-        <section id="download" className="rule-x paper-grid py-28">
+        <section id="download" className="rule-x paper-grid grain-veil py-28">
           <div className="mx-auto max-w-5xl px-6">
             <Rise>
-              <p className="eyebrow">Get Kernel</p>
-              <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
+              <p className="eyebrow">
+                <ScrambleText text="Get Kernel" />
+              </p>
+              <BoxReveal>
+                <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
                 Run it in a tab, or run it on your desk.
               </h2>
+              </BoxReveal>
               <p className="mt-6 max-w-lg text-muted-foreground">
                 The desktop build adds local file access, shell tools, and offline models. The web
                 build needs nothing at all — the models are included.
               </p>
             </Rise>
-            <div className="mt-12">
+            <div className="mt-12 grid items-center gap-10 lg:grid-cols-[1fr_auto]">
               <DownloadGrid />
+              <KernelCube />
             </div>
           </div>
         </section>
