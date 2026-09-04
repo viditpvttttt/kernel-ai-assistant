@@ -7,7 +7,7 @@ import { Ambience } from "./ambience";
 import { ScrambleText } from "./fx/scramble-text";
 import { Magnetic } from "./fx/magnetic";
 import { PerspectiveGrid } from "./fx/perspective-grid";
-import { Depth, Tilt3D } from "./fx/tilt";
+import { AmbientLattice } from "./fx/ambient-lattice";\nimport { Depth, Tilt3D } from "./fx/tilt";
 
 const WORD = "Kernel".split("");
 
@@ -21,13 +21,13 @@ export function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
 
   return (
-    <section ref={ref} className="paper-grid grain-veil relative overflow-hidden">
+    <section ref={ref} className="void-surface hero-vignette relative overflow-hidden">
       <Ambience intensity="bold" />
-      <PerspectiveGrid />
+      <AmbientLattice />\n      <PerspectiveGrid />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       <motion.div
         style={{ y, opacity, scale }}
-        className="relative mx-auto flex min-h-[100svh] max-w-5xl flex-col items-center justify-center px-6 pt-28 pb-20 text-center"
+        className="relative z-10 mx-auto flex min-h-[100svh] max-w-5xl flex-col items-center justify-center px-6 pt-28 pb-20 text-center"
       >
         <motion.span
           className="eyebrow flex items-center gap-2"
@@ -71,7 +71,7 @@ export function Hero() {
         >
           <Tilt3D max={8} className="w-full">
             <Depth z={30}>
-              <div className="flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-left shadow-[0_30px_60px_-40px_var(--ink)]">
+              <div className="glass-panel flex items-center gap-3 rounded-2xl px-4 py-3 text-left shadow-[0_30px_90px_-48px_var(--spectral-r)]">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Paperclip className="h-4 w-4" />
                   <ImageIcon className="h-4 w-4" />
@@ -91,7 +91,7 @@ export function Hero() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.15 + i * 0.06, duration: 0.5 }}
-                className="rounded-full border border-border px-3 py-1 font-mono text-[11px] tracking-widest text-muted-foreground uppercase"
+                className="rounded-full border border-white/10 bg-white/[0.025] px-3 py-1 font-mono text-[11px] tracking-widest text-muted-foreground uppercase backdrop-blur-sm"
               >
                 {m}
               </motion.span>
