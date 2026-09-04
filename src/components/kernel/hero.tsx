@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 
 import { Ambience } from "./ambience";
+import { ScrambleText } from "./fx/scramble-text";
 import { Magnetic } from "./fx/magnetic";
 import { PerspectiveGrid } from "./fx/perspective-grid";
 import { Depth, Tilt3D } from "./fx/tilt";
@@ -20,7 +21,7 @@ export function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
 
   return (
-    <section ref={ref} className="paper-grid relative overflow-hidden">
+    <section ref={ref} className="paper-grid grain-veil relative overflow-hidden">
       <Ambience intensity="bold" />
       <PerspectiveGrid />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
@@ -35,7 +36,7 @@ export function Hero() {
           transition={{ delay: 0.9, duration: 0.8 }}
         >
           <Sparkle className="h-3 w-3" />
-          Kernel by Substrate · models included
+          <ScrambleText text="Kernel by Substrate · models included" />
         </motion.span>
 
         <h1 className="mt-8 flex text-[clamp(4rem,17vw,13rem)] leading-[0.85] font-extralight tracking-[-0.03em]">
@@ -120,6 +121,21 @@ export function Hero() {
               </a>
             </Magnetic>
           </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.8, duration: 0.8 }}
+          className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2"
+        >
+          <span className="eyebrow">Scroll</span>
+          <motion.span
+            aria-hidden
+            animate={{ height: [8, 26, 8], opacity: [0.25, 0.8, 0.25] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+            className="w-px bg-foreground"
+          />
         </motion.div>
       </motion.div>
     </section>

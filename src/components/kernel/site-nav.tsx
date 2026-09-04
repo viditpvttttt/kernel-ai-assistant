@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 
+import { RollText } from "./fx/roll-text";
 import { KernelLogo } from "./logo";
 import { ThemeToggle } from "./theme-toggle";
 import { cn } from "@/lib/utils";
@@ -28,12 +29,18 @@ export function SiteNav() {
     >
       <nav
         className={cn(
-          "flex w-full max-w-5xl items-center justify-between rounded-full px-4 py-2 transition-all duration-500",
+          "relative flex w-full max-w-5xl items-center justify-between rounded-full px-4 py-2 transition-all duration-500",
           condensed
             ? "border border-border bg-background/80 backdrop-blur-xl"
             : "border border-transparent",
         )}
       >
+        {condensed && (
+          <span
+            aria-hidden
+            className="spectral-hairline pointer-events-none absolute inset-x-6 top-0 h-px"
+          />
+        )}
         <Link to="/" aria-label="Kernel by Substrate home">
           <KernelLogo />
         </Link>
@@ -42,9 +49,13 @@ export function SiteNav() {
             <a
               key={l.label}
               href={l.href}
-              className="relative text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="group relative text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
-              {l.label}
+              <RollText text={l.label} />
+              <span
+                aria-hidden
+                className="absolute -bottom-1 left-0 h-px w-0 bg-foreground transition-all duration-300 group-hover:w-full"
+              />
             </a>
           ))}
         </div>

@@ -1,3 +1,4 @@
+import { RollText } from "./fx/roll-text";
 import { KernelLogo } from "./logo";
 
 const columns = [
@@ -7,7 +8,7 @@ const columns = [
 
 export function SiteFooter() {
   return (
-    <footer className="rule-x paper-grid mt-32">
+    <footer className="rule-x paper-grid grain-veil mt-32">
       <div className="mx-auto max-w-5xl px-6 py-16">
         <div className="flex flex-col gap-12 sm:flex-row sm:justify-between">
           <div className="max-w-xs">
@@ -26,9 +27,9 @@ export function SiteFooter() {
                     <li key={item}>
                       <a
                         href="#download"
-                        className="text-muted-foreground transition-colors hover:text-foreground"
+                        className="group inline-block text-muted-foreground transition-colors hover:text-foreground"
                       >
-                        {item}
+                        <RollText text={item} />
                       </a>
                     </li>
                   ))}

@@ -289,3 +289,72 @@
   perspective: 1000px;
   transform-style: preserve-3d;
 }
+
+/* ---------- Spectral accents (progress bar, shutters, hairlines) ---------- */
+:root {
+  --spectral-b: oklch(0.72 0.16 258);
+  --spectral-r: oklch(0.72 0.19 330);
+  --spectral-g: oklch(0.78 0.17 45);
+}
+
+.dark {
+  --spectral-b: oklch(0.62 0.18 260);
+  --spectral-r: oklch(0.62 0.2 335);
+  --spectral-g: oklch(0.68 0.18 45);
+}
+
+@utility spectral-bar {
+  background-image: linear-gradient(
+    to right,
+    var(--spectral-b),
+    var(--spectral-r) 50%,
+    var(--spectral-g)
+  );
+}
+
+@utility spectral-hairline {
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in oklab, var(--spectral-b) 45%, transparent),
+    color-mix(in oklab, var(--spectral-r) 35%, transparent),
+    transparent
+  );
+}
+
+/* Fine dotted veil that sits over sections for printed-paper texture. */
+@utility grain-veil {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    background-image: radial-gradient(
+      color-mix(in oklab, var(--clay) 22%, transparent) 0.5px,
+      transparent 0.5px
+    );
+    background-size: 4px 4px;
+  }
+}
+
+@keyframes kernel-cube {
+  from {
+    transform: rotateX(-18deg) rotateY(0deg);
+  }
+  to {
+    transform: rotateX(-18deg) rotateY(360deg);
+  }
+}
+
+@utility cube-spin {
+  animation: kernel-cube 26s linear infinite;
+  transform-style: preserve-3d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cube-spin {
+    animation: none;
+  }
+}
