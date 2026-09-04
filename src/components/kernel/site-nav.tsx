@@ -29,7 +29,7 @@ export function SiteNav() {
     >
       <nav
         className={cn(
-          "flex w-full max-w-5xl items-center justify-between rounded-full px-4 py-2 transition-all duration-500",
+          "relative flex w-full max-w-5xl items-center justify-between rounded-full px-4 py-2 transition-all duration-500",
           condensed
             ? "border border-border bg-background/80 backdrop-blur-xl"
             : "border border-transparent",
