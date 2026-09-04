@@ -1,0 +1,14 @@
+{
+  "name": "Kernel by Substrate",
+  "short_name": "Kernel",
+  "description": "Agentic multimodal AI with Claude, GPT-5.5, Gemini and Grok included.",
+  "start_url": "/chat",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f2e7",
+  "theme_color": "#f7f2e7",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
