@@ -107,43 +107,7 @@
   --sidebar-ring: oklch(0.704 0.04 256.788);
 }
 
-.dark {
-  --background: oklch(0.185 0.006 60);
-  --foreground: oklch(0.955 0.014 86);
-  --ink: oklch(0.955 0.014 86);
-  --clay: oklch(0.72 0.1 48);
-  --grid: oklch(0.955 0.014 86 / 8%);
-  --card: oklch(0.225 0.007 62);
-  --card-foreground: oklch(0.955 0.014 86);
-  --popover: oklch(0.225 0.007 62);
-  --popover-foreground: oklch(0.955 0.014 86);
-  --primary: oklch(0.955 0.014 86);
-  --primary-foreground: oklch(0.185 0.006 60);
-  --secondary: oklch(0.26 0.008 62);
-  --secondary-foreground: oklch(0.955 0.014 86);
-  --muted: oklch(0.26 0.008 62);
-  --muted-foreground: oklch(0.7 0.012 70);
-  --accent: oklch(0.3 0.014 66);
-  --accent-foreground: oklch(0.955 0.014 86);
-  --destructive: oklch(0.65 0.19 25);
-  --destructive-foreground: oklch(0.955 0.014 86);
-  --border: oklch(0.955 0.014 86 / 12%);
-  --input: oklch(0.955 0.014 86 / 16%);
-  --ring: oklch(0.72 0.1 48);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
-}
+.dark {\n  --background: oklch(0.12 0.025 270);\n  --foreground: oklch(0.96 0.018 275);\n  --ink: oklch(0.96 0.018 275);\n  --clay: oklch(0.74 0.16 320);\n  --grid: oklch(0.96 0.018 275 / 10%);\n  --card: oklch(0.16 0.03 270 / 82%);\n  --card-foreground: oklch(0.96 0.018 275);\n  --popover: oklch(0.16 0.03 270);\n  --popover-foreground: oklch(0.96 0.018 275);\n  --primary: oklch(0.96 0.018 275);\n  --primary-foreground: oklch(0.12 0.025 270);\n  --secondary: oklch(0.2 0.035 270);\n  --secondary-foreground: oklch(0.96 0.018 275);\n  --muted: oklch(0.2 0.035 270);\n  --muted-foreground: oklch(0.69 0.03 275);\n  --accent: oklch(0.24 0.065 300);\n  --accent-foreground: oklch(0.96 0.018 275);\n  --destructive: oklch(0.65 0.2 25);\n  --destructive-foreground: oklch(0.96 0.018 275);\n  --border: oklch(0.96 0.018 275 / 13%);\n  --input: oklch(0.96 0.018 275 / 18%);\n  --ring: oklch(0.74 0.16 320);\n  --chart-1: oklch(0.68 0.2 300);\n  --chart-2: oklch(0.7 0.17 220);\n  --chart-3: oklch(0.76 0.16 45);\n  --chart-4: oklch(0.66 0.2 330);\n  --chart-5: oklch(0.72 0.18 185);\n  --sidebar: oklch(0.14 0.03 270 / 88%);\n  --sidebar-foreground: oklch(0.96 0.018 275);\n  --sidebar-primary: oklch(0.68 0.2 300);\n  --sidebar-primary-foreground: oklch(0.96 0.018 275);\n  --sidebar-accent: oklch(0.22 0.05 290);\n  --sidebar-accent-foreground: oklch(0.96 0.018 275);\n  --sidebar-border: oklch(0.96 0.018 275 / 10%);\n  --sidebar-ring: oklch(0.68 0.2 300);\n}
 
 @layer base {
   * {
@@ -358,3 +322,4 @@
     animation: none;
   }
 }
+\n/* ---------- Ambient computer surface ---------- */\n@utility void-surface {\n  background-color: var(--background);\n  background-image: radial-gradient(circle at 50% -10%, color-mix(in oklab, var(--spectral-b) 18%, transparent), transparent 42%), radial-gradient(circle at 88% 28%, color-mix(in oklab, var(--spectral-r) 10%, transparent), transparent 34%);\n}\n\n@utility hero-vignette {\n  background-image: radial-gradient(ellipse at center, transparent 0%, transparent 44%, color-mix(in oklab, var(--background) 68%, transparent) 100%);\n}\n\n@utility glass-panel {\n  background: color-mix(in oklab, var(--background) 72%, transparent);\n  border: 1px solid color-mix(in oklab, var(--foreground) 13%, transparent);\n  box-shadow: 0 30px 90px -60px color-mix(in oklab, var(--spectral-b) 70%, transparent);\n  backdrop-filter: blur(22px);\n}\n\n@keyframes kernel-float {\n  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }\n  50% { transform: translate3d(0, -14px, 0) rotate(4deg); }\n}\n\n@utility ambient-float {\n  animation: kernel-float 8s ease-in-out infinite;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .ambient-float { animation: none; }\n}
