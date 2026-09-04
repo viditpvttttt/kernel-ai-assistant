@@ -63,7 +63,7 @@ export function SiteNav() {
           <ThemeToggle />
           <Link
             to="/chat"
-            className="rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground transition-transform hover:scale-[1.03]"
+            className="rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground shadow-[0_12px_30px_-18px_var(--spectral-r)] transition-transform hover:scale-[1.04]"
           >
             Start free
           </Link>
