@@ -7,7 +7,8 @@ import { Ambience } from "./ambience";
 import { ScrambleText } from "./fx/scramble-text";
 import { Magnetic } from "./fx/magnetic";
 import { PerspectiveGrid } from "./fx/perspective-grid";
-import { AmbientLattice } from "./fx/ambient-lattice";\nimport { Depth, Tilt3D } from "./fx/tilt";
+import { AmbientLattice } from "./fx/ambient-lattice";
+import { Depth, Tilt3D } from "./fx/tilt";
 
 const WORD = "Kernel".split("");
 
@@ -23,7 +24,8 @@ export function Hero() {
   return (
     <section ref={ref} className="void-surface hero-vignette relative overflow-hidden">
       <Ambience intensity="bold" />
-      <AmbientLattice />\n      <PerspectiveGrid />
+      <AmbientLattice />
+      <PerspectiveGrid />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       <motion.div
         style={{ y, opacity, scale }}
