@@ -12,7 +12,7 @@ const RING = [
 /** A 3D ring of provider chips rotating around the Kernel core — no keys required. */
 export function ModelOrbit() {
   return (
-    <div className="relative mx-auto flex h-72 w-full max-w-xl items-center justify-center" style={{ perspective: 900 }}>
+    <div className="relative mx-auto flex h-80 w-full max-w-xl items-center justify-center" style={{ perspective: 900 }}>
       <motion.div
         className="absolute inset-0"
         style={{ transformStyle: "preserve-3d", rotateX: 68 }}
@@ -30,7 +30,7 @@ export function ModelOrbit() {
                 transformStyle: "preserve-3d",
               }}
             >
-              <div className="-translate-x-1/2 -translate-y-1/2 rounded-xl border border-border bg-card/90 px-3 py-2 text-center shadow-[0_10px_30px_-18px_var(--ink)] backdrop-blur">
+              <div className="-translate-x-1/2 -translate-y-1/2 rounded-xl border border-white/10 bg-white/[0.045] px-3 py-2 text-center shadow-[0_18px_46px_-28px_var(--spectral-b)] backdrop-blur-xl transition-colors hover:border-white/25">
                 <p className="font-display text-sm leading-none">{item.label}</p>
                 <p className="mt-1 font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
                   {item.note}
@@ -42,9 +42,11 @@ export function ModelOrbit() {
       </motion.div>
 
       <motion.div
+        aria-hidden
+        className="absolute h-52 w-52 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--spectral-b)_22%,transparent),transparent_68%)] blur-2xl"
         animate={{ scale: [1, 1.05, 1] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        className="relative z-10 flex h-28 w-28 flex-col items-center justify-center rounded-full border border-border bg-background/80 backdrop-blur"
+        className="relative z-10 flex h-32 w-32 flex-col items-center justify-center rounded-full border border-white/15 bg-background/75 shadow-[0_0_80px_-26px_var(--spectral-r)] backdrop-blur-xl"
       >
         <span className="font-display text-lg font-light">Kernel</span>
         <span className="font-mono text-[9px] tracking-widest text-muted-foreground uppercase">
