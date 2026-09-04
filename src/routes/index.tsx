@@ -71,14 +71,14 @@ function Index() {
       <main>
         <Hero />
 
-        <section className="mx-auto max-w-3xl px-6 py-32">
+        <section className="void-surface relative mx-auto max-w-3xl px-6 py-32">
           <ScrollRevealText
             className="text-[clamp(1.6rem,4vw,2.6rem)] leading-[1.25] font-light tracking-tight"
             text="Most chat apps stop at the answer. Kernel keeps going — planning, calling tools, checking its own work, and returning something you can actually ship."
           />
         </section>
 
-        <section id="models" className="rule-x grain-veil relative overflow-hidden py-24">
+        <section id="models" className="void-surface rule-x relative overflow-hidden py-24">
           <Ambience intensity="soft" />
           <div className="relative mx-auto max-w-5xl px-6 text-center">
             <Rise>
@@ -118,7 +118,7 @@ function Index() {
           <StickyStack />
         </section>
 
-        <section id="capabilities" className="rule-x grain-veil py-24">
+        <section id="capabilities" className="void-surface rule-x py-24">
           <div className="mx-auto max-w-5xl px-6">
             <Rise>
               <p className="eyebrow">
@@ -150,7 +150,7 @@ function Index() {
           </div>
         </section>
 
-        <section id="connectors" className="rule-x relative overflow-hidden py-24">
+        <section id="connectors" className="void-surface rule-x relative overflow-hidden py-24">
           <Ambience intensity="soft" />
           <div className="relative mx-auto max-w-5xl px-6">
             <Rise>
@@ -173,7 +173,7 @@ function Index() {
           </div>
         </section>
 
-        <section id="skills" className="rule-x py-24">
+        <section id="skills" className="void-surface rule-x py-24">
           <div className="mx-auto max-w-5xl px-6">
             <Rise>
               <p className="eyebrow">
@@ -191,7 +191,7 @@ function Index() {
           </div>
         </section>
 
-        <section id="download" className="rule-x paper-grid grain-veil py-28">
+        <section id="download" className="void-surface rule-x paper-grid grain-veil py-28">
           <div className="mx-auto max-w-5xl px-6">
             <Rise>
               <p className="eyebrow">
