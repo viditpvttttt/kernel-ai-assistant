@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 
+import { RollText } from "./fx/roll-text";
 import { KernelLogo } from "./logo";
 import { ThemeToggle } from "./theme-toggle";
 import { cn } from "@/lib/utils";
