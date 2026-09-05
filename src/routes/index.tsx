@@ -5,6 +5,7 @@ import { DownloadGrid } from "@/components/kernel/download";
 import { SiteFooter } from "@/components/kernel/footer";
 import { CursorSpotlight } from "@/components/kernel/fx/spotlight";
 import { ModelOrbit } from "@/components/kernel/fx/model-orbit";
+import { NeuralField } from "@/components/kernel/fx/neural-field";
 import { Depth, Tilt3D } from "@/components/kernel/fx/tilt";
 import { Hero } from "@/components/kernel/hero";
 import { ConnectorMarquee } from "@/components/kernel/marquee";
@@ -133,7 +134,10 @@ function Index() {
                 prefer to route through your own account.
               </p>
             </Rise>
-            <div className="mt-12">
+            <div className="relative mx-auto mt-12 max-w-4xl">
+              <NeuralField />
+            </div>
+            <div className="mt-10">
               <ModelOrbit />
             </div>
           </div>
@@ -248,7 +252,11 @@ function Index() {
             </Rise>
             <div className="mt-12 grid items-center gap-10 lg:grid-cols-[1fr_auto]">
               <DownloadGrid />
-              <KernelCube />
+              <Tilt3D max={14}>
+                <Depth z={30}>
+                  <KernelCube />
+                </Depth>
+              </Tilt3D>
             </div>
           </div>
         </section>
