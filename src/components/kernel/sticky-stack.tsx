@@ -68,6 +68,7 @@ function Card({
   const opacity = useTransform(progress, [start, start + 0.04], i === 0 ? [1, 1] : [0, 1]);
   // Cards already parked at the top shrink slightly so the deck reads as depth.
   const scale = useTransform(progress, [end, Math.min(end + 1 / total, 1)], [1, 0.955]);
+  const rotateX = useTransform(progress, [start, end], [i === 0 ? 0 : 8, 0]);
   const brightness = useTransform(
     progress,
     [end, Math.min(end + 1 / total, 1)],
@@ -76,8 +77,8 @@ function Card({
 
   return (
     <motion.article
-      style={{ y, opacity, scale, filter: brightness, zIndex: i, top: `${i * 16}px` }}
-      className="bg-background absolute origin-top inset-x-0 flex h-[400px] flex-col justify-between overflow-hidden rounded-3xl border border-border p-8 shadow-[0_1px_0_var(--color-border)] sm:p-12"
+      style={{ y, opacity, scale, rotateX, filter: brightness, zIndex: i, top: `${i * 16}px`, transformPerspective: 1000 }}
+      className="glass-panel absolute inset-x-0 flex h-[400px] origin-top flex-col justify-between overflow-hidden rounded-3xl p-8 shadow-[0_28px_90px_-58px_var(--spectral-b)] sm:p-12"
     >
       <div className="flex items-start justify-between">
         <span className="font-mono text-xs tracking-widest text-muted-foreground">{step.index}</span>
