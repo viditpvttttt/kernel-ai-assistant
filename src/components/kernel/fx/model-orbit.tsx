@@ -46,6 +46,9 @@ export function ModelOrbit() {
         className="absolute h-52 w-52 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--spectral-b)_22%,transparent),transparent_68%)] blur-2xl"
         animate={{ scale: [1, 1.05, 1] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <motion.div
         className="relative z-10 flex h-32 w-32 flex-col items-center justify-center rounded-full border border-white/15 bg-background/75 shadow-[0_0_80px_-26px_var(--spectral-r)] backdrop-blur-xl"
       >
         <span className="font-display text-lg font-light">Kernel</span>

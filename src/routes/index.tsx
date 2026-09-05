@@ -9,6 +9,9 @@ import { Depth, Tilt3D } from "@/components/kernel/fx/tilt";
 import { Hero } from "@/components/kernel/hero";
 import { ConnectorMarquee } from "@/components/kernel/marquee";
 import { BoxReveal } from "@/components/kernel/fx/box-reveal";
+import { CountUp } from "@/components/kernel/fx/count-up";
+import { FlipWords } from "@/components/kernel/fx/flip-words";
+import { GlowCard } from "@/components/kernel/fx/glow-card";
 import { KernelCube } from "@/components/kernel/fx/kernel-cube";
 import { ScrambleText } from "@/components/kernel/fx/scramble-text";
 import { ScrollProgress } from "@/components/kernel/fx/scroll-progress";
@@ -62,6 +65,12 @@ const capabilities = [
   },
 ];
 
+const metrics = [
+  { value: 4, label: "Frontier models included", suffix: "" },
+  { value: 50, label: "Tool steps per run", suffix: "+" },
+  { value: 0, label: "API keys to set up", suffix: "" },
+] as { value: number; label: string; suffix?: string; decimals?: number }[];
+
 function Index() {
   return (
     <>
@@ -76,6 +85,34 @@ function Index() {
             className="text-[clamp(1.6rem,4vw,2.6rem)] leading-[1.25] font-light tracking-tight"
             text="Most chat apps stop at the answer. Kernel keeps going — planning, calling tools, checking its own work, and returning something you can actually ship."
           />
+        </section>
+
+        <section className="rule-x void-surface py-20">
+          <div className="mx-auto grid max-w-5xl gap-10 px-6 sm:grid-cols-3">
+            {metrics.map((m, i) => (
+              <Rise key={m.label} delay={i * 0.08}>
+                <div className="text-center sm:text-left">
+                  <p className="font-display text-[clamp(2.4rem,6vw,3.6rem)] leading-none font-extralight">
+                    <CountUp
+                      to={m.value}
+                      decimals={m.decimals ?? 0}
+                      suffix={m.suffix ?? ""}
+                    />
+                  </p>
+                  <p className="eyebrow mt-4">{m.label}</p>
+                </div>
+              </Rise>
+            ))}
+          </div>
+          <div className="mx-auto mt-14 max-w-5xl px-6">
+            <p className="text-center text-[clamp(1.2rem,3vw,1.8rem)] font-light sm:text-left">
+              Built for{" "}
+              <FlipWords
+                words={["research", "analysis", "operations", "writing", "shipping"]}
+                className="text-muted-foreground"
+              />
+            </p>
+          </div>
         </section>
 
         <section id="models" className="void-surface rule-x relative overflow-hidden py-24">
@@ -135,13 +172,15 @@ function Index() {
                 <Rise key={c.label} delay={i * 0.05}>
                   <Tilt3D max={10} className="h-full">
                     <Depth z={24} className="h-full">
-                      <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-[0_24px_50px_-42px_var(--ink)]">
+                      <GlowCard className="h-full border border-border bg-card shadow-[0_24px_50px_-42px_var(--ink)]">
+                      <div className="h-full p-6">
                         <p className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
                           {String(i + 1).padStart(2, "0")}
                         </p>
                         <h3 className="mt-4 font-display text-xl font-light">{c.label}</h3>
                         <p className="mt-3 text-sm text-muted-foreground">{c.body}</p>
                       </div>
+                      </GlowCard>
                     </Depth>
                   </Tilt3D>
                 </Rise>
