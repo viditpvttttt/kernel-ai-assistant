@@ -4,7 +4,6 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 
 import { Ambience } from "./ambience";
-import { ScrambleText } from "./fx/scramble-text";
 import { Magnetic } from "./fx/magnetic";
 import { PerspectiveGrid } from "./fx/perspective-grid";
 import { AmbientLattice } from "./fx/ambient-lattice";
@@ -38,7 +37,7 @@ export function Hero() {
           transition={{ delay: 0.9, duration: 0.8 }}
         >
           <Sparkle className="h-3 w-3" />
-          <ScrambleText text="Kernel by Substrate · models included" />
+          Kernel by Substrate · models included
         </motion.span>
 
         <h1 className="mt-8 flex text-[clamp(4rem,17vw,13rem)] leading-[0.85] font-extralight tracking-[-0.03em]">
