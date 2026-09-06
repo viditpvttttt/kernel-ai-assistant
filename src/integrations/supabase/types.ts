@@ -14,7 +14,174 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      automations: {
+        Row: {
+          action: string
+          connector_id: string
+          created_at: string
+          enabled: boolean
+          id: string
+          name: string
+          trigger: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action?: string
+          connector_id?: string
+          created_at?: string
+          enabled?: boolean
+          id: string
+          name?: string
+          trigger?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          connector_id?: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          name?: string
+          trigger?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      connectors: {
+        Row: {
+          base_url: string
+          created_at: string
+          credential: string
+          enabled: boolean
+          header_name: string
+          id: string
+          kind: string
+          mcp_tool_count: number | null
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          base_url?: string
+          created_at?: string
+          credential?: string
+          enabled?: boolean
+          header_name?: string
+          id: string
+          kind?: string
+          mcp_tool_count?: number | null
+          name?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          base_url?: string
+          created_at?: string
+          credential?: string
+          enabled?: boolean
+          header_name?: string
+          id?: string
+          kind?: string
+          mcp_tool_count?: number | null
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      skills: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string
+          id: string
+          instructions: string
+          name: string
+          permissions: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          id: string
+          instructions?: string
+          name?: string
+          permissions?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          id?: string
+          instructions?: string
+          name?: string
+          permissions?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      threads: {
+        Row: {
+          created_at: string
+          id: string
+          messages: Json
+          model: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          messages?: Json
+          model?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          messages?: Json
+          model?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
