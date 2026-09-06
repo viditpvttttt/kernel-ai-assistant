@@ -3,10 +3,8 @@ import { ArrowUp, Image as ImageIcon, Mic, Paperclip, Sparkle } from "lucide-rea
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 
-import { Ambience } from "./ambience";
 import { Magnetic } from "./fx/magnetic";
-import { PerspectiveGrid } from "./fx/perspective-grid";
-import { AmbientLattice } from "./fx/ambient-lattice";
+import { PastelWash } from "./fx/pastel-wash";
 import { Depth, Tilt3D } from "./fx/tilt";
 
 const WORD = "Kernel".split("");
@@ -21,10 +19,8 @@ export function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
 
   return (
-    <section ref={ref} className="void-surface hero-vignette relative overflow-hidden">
-      <Ambience intensity="bold" />
-      <AmbientLattice />
-      <PerspectiveGrid />
+    <section ref={ref} className="paper-grid relative overflow-hidden bg-background">
+      <PastelWash />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       <motion.div
         style={{ y, opacity, scale }}
@@ -40,18 +36,26 @@ export function Hero() {
           Kernel by Substrate · models included
         </motion.span>
 
-        <h1 className="mt-8 flex text-[clamp(4rem,17vw,13rem)] leading-[0.85] font-extralight tracking-[-0.03em]">
+        <h1 className="relative mt-8 flex text-[clamp(4rem,17vw,13rem)] leading-[0.85] font-extralight tracking-[-0.03em]">
           {WORD.map((letter, i) => (
             <motion.span
               key={i}
-              initial={{ opacity: 0, y: 60, rotateX: -60, filter: "blur(12px)" }}
+              initial={{ opacity: 0, y: 60, rotateX: -60, filter: "blur(14px)" }}
               animate={{ opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)" }}
-              transition={{ delay: 0.1 + i * 0.07, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ delay: 0.1 + i * 0.09, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
               className="inline-block [transform-style:preserve-3d]"
             >
               {letter}
             </motion.span>
           ))}
+          <motion.span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(105deg,transparent_38%,color-mix(in_oklab,var(--foreground)_16%,transparent)_50%,transparent_62%)] bg-[length:220%_100%]"
+            initial={{ backgroundPositionX: "180%" }}
+            animate={{ backgroundPositionX: ["180%", "-80%"] }}
+            transition={{ delay: 1.6, duration: 2.6, repeat: Infinity, repeatDelay: 4.5, ease: "easeInOut" }}
+            style={{ mixBlendMode: "overlay" }}
+          />
         </h1>
 
         <motion.p
@@ -79,9 +83,13 @@ export function Hero() {
                   <Mic className="h-4 w-4" />
                 </div>
                 <TypingLine />
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <motion.span
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground"
+                  animate={{ y: [0, -2, 0] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                >
                   <ArrowUp className="h-4 w-4" />
-                </span>
+                </motion.span>
               </div>
             </Depth>
           </Tilt3D>
@@ -89,10 +97,11 @@ export function Hero() {
             {modes.map((m, i) => (
               <motion.span
                 key={m}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, scale: 0.9, filter: "blur(6px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                 transition={{ delay: 1.15 + i * 0.06, duration: 0.5 }}
-                className="rounded-full border border-white/10 bg-white/[0.025] px-3 py-1 font-mono text-[11px] tracking-widest text-muted-foreground uppercase backdrop-blur-sm"
+                whileHover={{ y: -3, scale: 1.05 }}
+                className="rounded-full border border-border bg-background/40 px-3 py-1 font-mono text-[11px] tracking-widest text-muted-foreground uppercase backdrop-blur-sm"
               >
                 {m}
               </motion.span>
@@ -123,7 +132,6 @@ export function Hero() {
             </Magnetic>
           </motion.div>
         </motion.div>
-
       </motion.div>
     </section>
   );
