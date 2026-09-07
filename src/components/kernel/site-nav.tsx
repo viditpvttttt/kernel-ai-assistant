@@ -2,6 +2,9 @@ import { Link } from "@tanstack/react-router";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 
+import { useAccount } from "@/lib/cloud-sync";
+
+
 import { RollText } from "./fx/roll-text";
 import { KernelLogo } from "./logo";
 import { ThemeToggle } from "./theme-toggle";
@@ -19,6 +22,7 @@ export function SiteNav() {
   const [condensed, setCondensed] = useState(false);
   const { scrollY } = useScroll();
   useMotionValueEvent(scrollY, "change", (v) => setCondensed(v > 40));
+  const { account, signOut } = useAccount();
 
   return (
     <motion.header
@@ -61,12 +65,38 @@ export function SiteNav() {
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Link
-            to="/chat"
-            className="rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground shadow-[0_12px_30px_-18px_var(--spectral-r)] transition-transform hover:scale-[1.04]"
-          >
-            Start free
-          </Link>
+          {account ? (
+            <>
+              <button
+                type="button"
+                onClick={signOut}
+                className="hidden rounded-full border border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground sm:block"
+              >
+                Sign out
+              </button>
+              <Link
+                to="/chat"
+                className="rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground shadow-[0_12px_30px_-18px_var(--spectral-r)] transition-transform hover:scale-[1.04]"
+              >
+                Open Kernel
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/auth"
+                className="hidden rounded-full border border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground sm:block"
+              >
+                Sign in
+              </Link>
+              <Link
+                to="/chat"
+                className="rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground shadow-[0_12px_30px_-18px_var(--spectral-r)] transition-transform hover:scale-[1.04]"
+              >
+                Start free
+              </Link>
+            </>
+          )}
         </div>
       </nav>
     </motion.header>

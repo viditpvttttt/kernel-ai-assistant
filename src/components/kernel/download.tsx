@@ -1,14 +1,13 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Apple, Check, Globe, Monitor, Terminal } from "lucide-react";
+import { Apple, Check, Globe, Monitor } from "lucide-react";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-type Platform = "mac" | "windows" | "linux" | "web";
+type Platform = "mac" | "windows" | "web";
 
 const platforms: { id: Platform; name: string; meta: string; icon: typeof Apple }[] = [
   { id: "mac", name: "macOS", meta: "Install app · Universal", icon: Apple },
   { id: "windows", name: "Windows", meta: "Install app · x64", icon: Monitor },
-  { id: "linux", name: "Linux", meta: "Install app · any distro", icon: Terminal },
   { id: "web", name: "Web", meta: "No install", icon: Globe },
 ];
 
@@ -46,9 +45,7 @@ export function DownloadGrid() {
   const manualHint = (id: Platform) => {
     if (id === "mac")
       return "In Safari choose File → Add to Dock, or in Chrome use the install icon in the address bar.";
-    if (id === "windows")
-      return "In Chrome or Edge, click the install icon in the address bar (or ⋯ → Install Kernel).";
-    return "In Chrome, open the menu → Cast, save and share → Install page as app.";
+    return "In Chrome or Edge, click the install icon in the address bar (or ⋯ → Install Kernel).";
   };
 
   const handle = async (id: Platform) => {

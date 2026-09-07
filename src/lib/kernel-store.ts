@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import type { ChatMessage } from "./agent";
+import { useCloudCollection } from "./cloud-sync";
 
 /** Local-first persistence for threads, API keys, connectors, automations, skills and plugins. */
 
@@ -339,6 +340,7 @@ export function clearAllLocalData() {
 
 export function useThreads() {
   const [threads, setThreads, hydrated] = useLocal<Thread[]>(KEYS.threads, []);
+  const cloud = useCloudCollection<Thread>("threads", threads, setThreads, hydrated);
 
   const upsert = useCallback(
     (thread: Thread) =>
@@ -352,23 +354,32 @@ export function useThreads() {
   );
 
   const remove = useCallback(
-    (id: string) => setThreads((prev) => prev.filter((t) => t.id !== id)),
-    [setThreads],
+    (id: string) => {
+      setThreads((prev) => prev.filter((t) => t.id !== id));
+      void cloud.removeRemote(id);
+    },
+    [setThreads, cloud],
   );
 
-  return { threads, upsert, remove, hydrated };
+  return { threads, upsert, remove, hydrated, sync: cloud };
 }
 
 export function useConnectors() {
-  return useLocal<Connector[]>(KEYS.connectors, [], ["credential"]);
+  const [items, setItems, hydrated] = useLocal<Connector[]>(KEYS.connectors, [], ["credential"]);
+  useCloudCollection<Connector>("connectors", items, setItems, hydrated);
+  return [items, setItems, hydrated] as const;
 }
 
 export function useAutomations() {
-  return useLocal<Automation[]>(KEYS.automations, []);
+  const [items, setItems, hydrated] = useLocal<Automation[]>(KEYS.automations, []);
+  useCloudCollection<Automation>("automations", items, setItems, hydrated);
+  return [items, setItems, hydrated] as const;
 }
 
 export function useSkills() {
-  return useLocal<Skill[]>(KEYS.skills, DEFAULT_SKILLS);
+  const [items, setItems, hydrated] = useLocal<Skill[]>(KEYS.skills, DEFAULT_SKILLS);
+  useCloudCollection<Skill>("skills", items, setItems, hydrated);
+  return [items, setItems, hydrated] as const;
 }
 
 export function usePlugins() {
