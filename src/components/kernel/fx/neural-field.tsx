@@ -54,8 +54,7 @@ export function NeuralField({ className = "" }: { className?: string }) {
             key={`${link.x}-${link.y}-${index}`}
             className="absolute h-px origin-left bg-gradient-to-r from-[color:var(--spectral-b)]/10 via-[color:var(--spectral-r)]/70 to-transparent shadow-[0_0_14px_var(--spectral-r)]"
             style={{ left: link.x + "%", top: link.y + "%", width: link.length + "%", rotate: link.rotate, transform: "translateZ(-24px)" }}
-            animate={reducedMotion ? undefined : { opacity: [0.18, 0.9, 0.18], scaleX: [0.84, 1.05, 0.84] }}
-            transition={reducedMotion ? undefined : { duration: 3.2 + (index % 3) * 0.6, repeat: Infinity, delay: index * 0.16, ease: "easeInOut" }}
+            {...(reducedMotion ? {} : { animate: { opacity: [0.18, 0.9, 0.18], scaleX: [0.84, 1.05, 0.84] }, transition: { duration: 3.2 + (index % 3) * 0.6, repeat: Infinity, delay: index * 0.16, ease: "easeInOut" } as const })}
           />
         ))}
         {nodes.map((node, index) => (
@@ -63,8 +62,7 @@ export function NeuralField({ className = "" }: { className?: string }) {
             key={node.label}
             className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-2"
             style={{ left: node.x + "%", top: node.y + "%", transform: "translateZ(52px)" }}
-            animate={reducedMotion ? undefined : { y: [0, -8, 0] }}
-            transition={reducedMotion ? undefined : { duration: 4 + (index % 3) * 0.8, repeat: Infinity, delay: index * 0.18, ease: "easeInOut" }}
+            {...(reducedMotion ? {} : { animate: { y: [0, -8, 0] }, transition: { duration: 4 + (index % 3) * 0.8, repeat: Infinity, delay: index * 0.18, ease: "easeInOut" } as const })}
           >
             <span className="relative flex h-3 w-3 items-center justify-center rounded-full border border-white/50 bg-[color:var(--spectral-r)]/35 shadow-[0_0_24px_5px_var(--spectral-r)]">
               <span className="h-1 w-1 rounded-full bg-white" />
@@ -74,8 +72,7 @@ export function NeuralField({ className = "" }: { className?: string }) {
         ))}
         <motion.div
           className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--spectral-b)_26%,transparent),transparent_68%)] blur-xl"
-          animate={reducedMotion ? undefined : { scale: [0.9, 1.18, 0.9], opacity: [0.35, 0.65, 0.35] }}
-          transition={reducedMotion ? undefined : { duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+          {...(reducedMotion ? {} : { animate: { scale: [0.9, 1.18, 0.9], opacity: [0.35, 0.65, 0.35] }, transition: { duration: 5.5, repeat: Infinity, ease: "easeInOut" } as const })}
         />
       </motion.div>
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_25%,var(--background)_92%)] opacity-60" />
