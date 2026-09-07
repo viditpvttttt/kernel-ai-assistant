@@ -13,7 +13,7 @@ export function KernelMark({ className, spin = false }: { className?: string; sp
 export function KernelLogo({ className, byline = true }: { className?: string; byline?: boolean }) {
   return (
     <span className={cn("flex items-center gap-2.5", className)}>
-      <KernelMark spin />
+      <KernelMark />
       <span className="flex flex-col leading-none">
         <span className="font-display text-xl font-light tracking-tight">Kernel</span>
         {byline && (

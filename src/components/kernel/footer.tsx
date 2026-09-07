@@ -7,8 +7,18 @@ const columns = [
 
 export function SiteFooter() {
   return (
-    <footer className="rule-x paper-grid mt-32">
-      <div className="mx-auto max-w-5xl px-6 py-16">
+    <footer className="rule-x relative mt-32 overflow-hidden">
+      {/* Brand ambience gradient — blue → lavender → pink → coral */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.12]"
+        style={{
+          background:
+            "linear-gradient(90deg, oklch(0.80 0.10 245), oklch(0.78 0.12 295), oklch(0.82 0.10 10), oklch(0.75 0.14 35))",
+        }}
+      />
+      <div className="film-grain absolute inset-0 opacity-30" />
+      <div className="relative mx-auto max-w-5xl px-6 py-16">
         <div className="flex flex-col gap-12 sm:flex-row sm:justify-between">
           <div className="max-w-xs">
             <KernelLogo />

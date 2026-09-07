@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Download } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { Ambience } from "@/components/kernel/ambience";
@@ -265,6 +266,31 @@ function ChatPage() {
           <KernelLogo byline={false} />
         </Link>
         <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => {
+              if (!active) return;
+              const md = active.messages
+                .map((m) => `## ${m.role === "user" ? "You" : "Kernel"}\n\n${m.content}`)
+                .join("\n\n---\n\n");
+              const blob = new Blob([`# ${active.title}\n\n${md}`], { type: "text/markdown" });
+              const a = document.createElement("a");
+              a.href = URL.createObjectURL(blob);
+              a.download = `${active.title.slice(0, 40) || "kernel-chat"}.md`;
+              a.click();
+            }}
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            aria-label="Export chat"
+            title="Export as Markdown"
+          >
+            <Download className="h-4 w-4" />
+          </button>
+          <Link
+            to="/sign-in"
+            className="hidden items-center rounded-full border border-border px-4 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:flex"
+          >
+            Sign in
+          </Link>
           <PersonaPicker value={personaId} onChange={setPersonaId} />
           {apiKeys.keys.length > 1 && (
             <Select value={apiKeys.activeId} onValueChange={apiKeys.setActiveId}>

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as ApiWebBrowseRouteImport } from './routes/api/web-browse'
 import { Route as ApiChatAnthropicRouteImport } from './routes/api/chat/anthropic'
 import { Route as ApiChatGoogleRouteImport } from './routes/api/chat/google'
@@ -32,6 +33,11 @@ const ChatRoute = ChatRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignInRoute = SignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiWebBrowseRoute = ApiWebBrowseRouteImport.update({
@@ -69,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/privacy': typeof PrivacyRoute
+  '/sign-in': typeof SignInRoute
   '/api/web-browse': typeof ApiWebBrowseRoute
   '/api/chat/anthropic': typeof ApiChatAnthropicRoute
   '/api/chat/google': typeof ApiChatGoogleRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/privacy': typeof PrivacyRoute
+  '/sign-in': typeof SignInRoute
   '/api/web-browse': typeof ApiWebBrowseRoute
   '/api/chat/anthropic': typeof ApiChatAnthropicRoute
   '/api/chat/google': typeof ApiChatGoogleRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/privacy': typeof PrivacyRoute
+  '/sign-in': typeof SignInRoute
   '/api/web-browse': typeof ApiWebBrowseRoute
   '/api/chat/anthropic': typeof ApiChatAnthropicRoute
   '/api/chat/google': typeof ApiChatGoogleRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/privacy'
+    | '/sign-in'
     | '/api/web-browse'
     | '/api/chat/anthropic'
     | '/api/chat/google'
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/privacy'
+    | '/sign-in'
     | '/api/web-browse'
     | '/api/chat/anthropic'
     | '/api/chat/google'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/privacy'
+    | '/sign-in'
     | '/api/web-browse'
     | '/api/chat/anthropic'
     | '/api/chat/google'
@@ -139,6 +151,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChatRoute: typeof ChatRoute
   PrivacyRoute: typeof PrivacyRoute
+  SignInRoute: typeof SignInRoute
   ApiWebBrowseRoute: typeof ApiWebBrowseRoute
   ApiChatAnthropicRoute: typeof ApiChatAnthropicRoute
   ApiChatGoogleRoute: typeof ApiChatGoogleRoute
@@ -168,6 +181,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-in': {
+      id: '/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/web-browse': {
@@ -219,6 +239,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChatRoute: ChatRoute,
   PrivacyRoute: PrivacyRoute,
+  SignInRoute: SignInRoute,
   ApiWebBrowseRoute: ApiWebBrowseRoute,
   ApiChatAnthropicRoute: ApiChatAnthropicRoute,
   ApiChatGoogleRoute: ApiChatGoogleRoute,

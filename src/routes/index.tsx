@@ -4,14 +4,15 @@ import { ArrowUp, Code2, FileText, Globe, Search, Sparkles, Terminal, Zap } from
 import { Ambience } from "@/components/kernel/ambience";
 import { DownloadGrid } from "@/components/kernel/download";
 import { SiteFooter } from "@/components/kernel/footer";
-import { AuroraBars, CursorTrail, WaveBackground } from "@/components/kernel/fx/backgrounds";
+import { AuroraBars, WaveBackground } from "@/components/kernel/fx/backgrounds";
 import { HoverExpandCards } from "@/components/kernel/fx/hover-expand";
 import { AnimatedList, NumberFlow } from "@/components/kernel/fx/lists";
 import { DockNav, ExpandableTabs } from "@/components/kernel/fx/navigation";
 import { WordPreloader } from "@/components/kernel/fx/preloader";
 import { CursorSpotlight } from "@/components/kernel/fx/spotlight";
-import { GradientText, PerspectiveText, RollingText, ScrollProgressBar } from "@/components/kernel/fx/text-effects";
+import { PerspectiveText, RollingText, ScrollProgressBar } from "@/components/kernel/fx/text-effects";
 import { BlobCard, GooeyHover, MouseGlow } from "@/components/kernel/fx/hover-effects";
+import { AnimatedGrid, CardStack3D, FlipCard, MagneticText, ParallaxLayers, TextScramble } from "@/components/kernel/fx/advanced-3d";
 import { Depth, Tilt3D } from "@/components/kernel/fx/tilt";
 import { Hero } from "@/components/kernel/hero";
 import { ConnectorMarquee } from "@/components/kernel/marquee";
@@ -84,7 +85,6 @@ function Index() {
       <WordPreloader />
       <ScrollProgressBar />
       <CursorSpotlight />
-      <CursorTrail />
       <SiteNav />
       <main>
         <Hero />
@@ -94,6 +94,14 @@ function Index() {
           <ScrollRevealText
             className="text-[clamp(1.6rem,4vw,2.6rem)] leading-[1.25] font-light tracking-tight"
             text="Most chat apps stop at the answer. Kernel keeps going — planning, calling tools, checking its own work, and returning something you can actually ship."
+          />
+        </section>
+
+        {/* TextScramble tagline */}
+        <section className="mx-auto max-w-4xl px-6 pb-20 text-center">
+          <TextScramble
+            text="One surface. Every model. Zero setup."
+            className="font-display text-[clamp(1.4rem,3.5vw,2.2rem)] font-light tracking-tight"
           />
         </section>
 
@@ -120,7 +128,7 @@ function Index() {
             <Rise>
               <p className="eyebrow">No keys required</p>
               <h2 className="mx-auto mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
-                Every frontier model, <GradientText>already switched on.</GradientText>
+                Every frontier model, <MagneticText text="already switched on." className="font-medium" />.
               </h2>
               <p className="mx-auto mt-6 max-w-lg text-muted-foreground">
                 Substrate supplies the capacity. Open Kernel and start a chat — swap between{" "}
@@ -159,7 +167,7 @@ function Index() {
             <Rise>
               <p className="eyebrow">Web browsing</p>
               <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
-                Live information, <GradientText>on demand.</GradientText>
+                Live information, on demand.
               </h2>
               <p className="mt-6 max-w-lg text-muted-foreground">
                 Kernel doesn't just guess. It searches the web, reads pages, and cites what it finds —
@@ -224,6 +232,85 @@ function Index() {
             <div className="mt-12">
               <SkillCarousel />
             </div>
+          </div>
+        </section>
+
+        {/* 3D Flip cards — hover to reveal */}
+        <section className="rule-x py-20">
+          <div className="mx-auto max-w-5xl px-6">
+            <Rise>
+              <p className="eyebrow">Flip to explore</p>
+              <PerspectiveText
+                text="Built different, every layer."
+                className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05] font-extralight tracking-[-0.02em]"
+              />
+            </Rise>
+            <div className="mt-12 grid gap-4 sm:grid-cols-3">
+              {[
+                { front: "Local-first", back: "Threads, keys, files — all in your browser. Export or wipe anytime." },
+                { front: "Open models", back: "Claude, GPT-5.5, Gemini, Grok — swap mid-conversation, no setup." },
+                { front: "Real tools", back: "Calculator, web browse, code sandbox, image gen — 50 steps per turn." },
+              ].map((c) => (
+                <FlipCard
+                  key={c.front}
+                  className="h-48"
+                  front={
+                    <div className="flex h-full flex-col justify-center rounded-2xl border border-border bg-card p-6">
+                      <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">Hover</span>
+                      <h3 className="mt-3 font-display text-xl font-light">{c.front}</h3>
+                    </div>
+                  }
+                  back={
+                    <div className="flex h-full flex-col justify-center rounded-2xl border border-border bg-foreground p-6 text-background">
+                      <h3 className="font-display text-lg font-light">{c.front}</h3>
+                      <p className="mt-3 text-sm opacity-80">{c.back}</p>
+                    </div>
+                  }
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CardStack3D — cards that fan out on scroll */}
+        <section className="rule-x py-20">
+          <div className="mx-auto max-w-5xl px-6">
+            <Rise>
+              <p className="eyebrow">Scroll to explore</p>
+              <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
+                The full stack, top to bottom.
+              </h2>
+            </Rise>
+            <div className="mt-12">
+              <CardStack3D
+                items={[
+                  { title: "Models", body: "Four frontier models included — Claude, GPT-5.5, Gemini, and Grok. Switch mid-conversation." },
+                  { title: "Harness", body: "A real agent loop: plan, act, verify, remember. Up to 50 tool steps per turn, every step visible." },
+                  { title: "Web browse", body: "Server-side web search and page fetching. The agent reads live pages and cites sources." },
+                  { title: "Connectors", body: "REST APIs, webhooks, and MCP servers become tools the agent can call, scoped per chat." },
+                  { title: "Skills", body: "Teach it once and it keeps the lesson — reusable instructions, permissions, and personas." },
+                ]}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Parallax + AnimatedGrid section */}
+        <section className="rule-x relative overflow-hidden py-20">
+          <AnimatedGrid className="opacity-30" />
+          <div className="relative mx-auto max-w-5xl px-6 text-center">
+            <Rise>
+              <p className="eyebrow">Under the hood</p>
+              <ParallaxLayers speed={30}>
+                <h2 className="text-[clamp(2.2rem,6vw,4rem)] leading-[1.05] font-extralight tracking-[-0.02em]">
+                  Built on an open harness.
+                </h2>
+                <p className="mx-auto mt-6 max-w-lg text-muted-foreground">
+                  TanStack Start, Vite, and a real server entry. No black boxes — the agent loop,
+                  tool definitions, and streaming are all in your codebase.
+                </p>
+              </ParallaxLayers>
+            </Rise>
           </div>
         </section>
 
