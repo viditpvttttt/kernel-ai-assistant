@@ -28,6 +28,7 @@ import {
   imageGenerationTool,
   mcpConnectorTool,
   runAgent,
+  webBrowseTool,
   type AgentStep,
   type ChatAttachment,
   type ChatMessage,
@@ -172,6 +173,7 @@ function ChatPage() {
       ...(isPluginOn("code_interpreter") ? [codeInterpreterTool] : []),
       ...(isPluginOn("generate_image") ? [imageGenerationTool(provider)] : []),
       ...(isPluginOn("file_search") ? [fileSearchTool(files)] : []),
+      ...(isPluginOn("web_browse") ? [webBrowseTool] : []),
       ...apiConnectors.map(connectorTool),
       ...mcpTools,
     ];

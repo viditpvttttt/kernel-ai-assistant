@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ApiWebBrowseRouteImport } from './routes/api/web-browse'
 import { Route as ApiChatAnthropicRouteImport } from './routes/api/chat/anthropic'
 import { Route as ApiChatGoogleRouteImport } from './routes/api/chat/google'
 import { Route as ApiChatGrokRouteImport } from './routes/api/chat/grok'
@@ -31,6 +32,11 @@ const ChatRoute = ChatRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiWebBrowseRoute = ApiWebBrowseRouteImport.update({
+  id: '/api/web-browse',
+  path: '/api/web-browse',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiChatAnthropicRoute = ApiChatAnthropicRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/privacy': typeof PrivacyRoute
+  '/api/web-browse': typeof ApiWebBrowseRoute
   '/api/chat/anthropic': typeof ApiChatAnthropicRoute
   '/api/chat/google': typeof ApiChatGoogleRoute
   '/api/chat/grok': typeof ApiChatGrokRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/privacy': typeof PrivacyRoute
+  '/api/web-browse': typeof ApiWebBrowseRoute
   '/api/chat/anthropic': typeof ApiChatAnthropicRoute
   '/api/chat/google': typeof ApiChatGoogleRoute
   '/api/chat/grok': typeof ApiChatGrokRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/chat': typeof ChatRoute
   '/privacy': typeof PrivacyRoute
+  '/api/web-browse': typeof ApiWebBrowseRoute
   '/api/chat/anthropic': typeof ApiChatAnthropicRoute
   '/api/chat/google': typeof ApiChatGoogleRoute
   '/api/chat/grok': typeof ApiChatGrokRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/privacy'
+    | '/api/web-browse'
     | '/api/chat/anthropic'
     | '/api/chat/google'
     | '/api/chat/grok'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/privacy'
+    | '/api/web-browse'
     | '/api/chat/anthropic'
     | '/api/chat/google'
     | '/api/chat/grok'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/'
     | '/chat'
     | '/privacy'
+    | '/api/web-browse'
     | '/api/chat/anthropic'
     | '/api/chat/google'
     | '/api/chat/grok'
@@ -127,6 +139,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChatRoute: typeof ChatRoute
   PrivacyRoute: typeof PrivacyRoute
+  ApiWebBrowseRoute: typeof ApiWebBrowseRoute
   ApiChatAnthropicRoute: typeof ApiChatAnthropicRoute
   ApiChatGoogleRoute: typeof ApiChatGoogleRoute
   ApiChatGrokRoute: typeof ApiChatGrokRoute
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/web-browse': {
+      id: '/api/web-browse'
+      path: '/api/web-browse'
+      fullPath: '/api/web-browse'
+      preLoaderRoute: typeof ApiWebBrowseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/chat/anthropic': {
@@ -199,6 +219,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChatRoute: ChatRoute,
   PrivacyRoute: PrivacyRoute,
+  ApiWebBrowseRoute: ApiWebBrowseRoute,
   ApiChatAnthropicRoute: ApiChatAnthropicRoute,
   ApiChatGoogleRoute: ApiChatGoogleRoute,
   ApiChatGrokRoute: ApiChatGrokRoute,

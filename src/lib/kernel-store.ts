@@ -63,7 +63,7 @@ export type Skill = {
 
 export type Plugin = {
   id: string;
-  tool: "calculate" | "fetch_url" | "code_interpreter" | "generate_image" | "file_search";
+  tool: "calculate" | "fetch_url" | "code_interpreter" | "generate_image" | "file_search" | "web_browse";
   name: string;
   description: string;
   enabled: boolean;
@@ -233,6 +233,13 @@ export const DEFAULT_PLUGINS: Plugin[] = [
     tool: "file_search",
     name: "File search",
     description: "Keyword search over files you've uploaded in Settings → Files.",
+    enabled: true,
+  },
+  {
+    id: "web_browse",
+    tool: "web_browse",
+    name: "Web browse",
+    description: "Search the web and fetch live pages to pull current information when answering.",
     enabled: true,
   },
 ];

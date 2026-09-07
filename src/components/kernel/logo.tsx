@@ -1,19 +1,11 @@
-import { motion } from "motion/react";
-
-import markAsset from "@/assets/kernel-mark.png";
 import { cn } from "@/lib/utils";
+import { OrbitalDots } from "./fx/orbital-dots";
 
 export function KernelMark({ className, spin = false }: { className?: string; spin?: boolean }) {
   return (
-    <motion.img
-      src={markAsset}
-      alt=""
-      aria-hidden
-      width={816}
-      height={816}
-      className={cn("h-7 w-7 select-none dark:invert", className)}
-      animate={spin ? { rotate: 360 } : { rotate: 0 }}
-      transition={{ duration: 40, repeat: spin ? Infinity : 0, ease: "linear" }}
+    <OrbitalDots
+      className={cn("h-7 w-14 text-foreground dark:text-foreground", className)}
+      spin={spin}
     />
   );
 }

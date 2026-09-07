@@ -92,6 +92,52 @@ export const fetchUrlTool: ToolDefinition = {
   },
 };
 
+/** Built-in tool: search the web and browse pages via the server-side proxy. */
+export const webBrowseTool: ToolDefinition = {
+  name: "web_browse",
+  description:
+    "Search the web for a query and return top results with titles, URLs, and snippets. " +
+    "Alternatively, fetch a specific URL and return its readable text content. " +
+    "Use this to pull live information from the internet when answering questions.",
+  parameters: {
+    type: "object",
+    properties: {
+      query: { type: "string", description: "Search query to look up on the web" },
+      url: { type: "string", description: "Specific URL to fetch and read" },
+    },
+  },
+  async execute(args) {
+    const body: Record<string, string> = {};
+    if (typeof args["query"] === "string") body.query = args["query"];
+    if (typeof args["url"] === "string") body.url = args["url"];
+    if (!body.query && !body.url) return text("Provide a search query or a URL.");
+
+    const res = await fetch("/api/web-browse", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      return text(`Web browse error: ${(err as { error?: string }).error ?? res.statusText}`);
+    }
+    const data = await res.json();
+
+    if (data.results) {
+      const formatted = data.results
+        .map((r: { title: string; url: string; snippet: string }, i: number) =>
+          `${i + 1}. ${r.title}\n   ${r.url}\n   ${r.snippet}`,
+        )
+        .join("\n\n");
+      return text(`Search results for "${body.query}":\n\n${formatted}`);
+    }
+    if (data.text) {
+      return text(`Content from ${data.url}:\n\n${data.text}`);
+    }
+    return text("No results found.");
+  },
+};
+
 /** Wraps a user connector (API or webhook) as a callable tool. */
 export function connectorTool(connector: {
   id: string;

@@ -210,19 +210,19 @@
 }
 
 /* ---------- Ambience layer ---------- */
-/* Blue → violet → magenta → orange wash, matched to the brand reference gradient. */
+/* Brand ambience — blue → lavender → pink → coral (from gradient reference). */
 :root {
-  --aurora-1: radial-gradient(circle at 50% 50%, oklch(0.72 0.16 258 / 60%), transparent 70%);
-  --aurora-2: radial-gradient(circle at 50% 50%, oklch(0.72 0.19 330 / 55%), transparent 70%);
-  --aurora-3: radial-gradient(circle at 50% 50%, oklch(0.78 0.17 45 / 55%), transparent 70%);
-  --aurora-4: radial-gradient(circle at 50% 50%, oklch(0.68 0.2 300 / 45%), transparent 70%);
+  --aurora-1: radial-gradient(circle at 50% 50%, oklch(0.80 0.10 245 / 55%), transparent 70%);
+  --aurora-2: radial-gradient(circle at 50% 50%, oklch(0.78 0.12 295 / 50%), transparent 70%);
+  --aurora-3: radial-gradient(circle at 50% 50%, oklch(0.82 0.10 10 / 50%), transparent 70%);
+  --aurora-4: radial-gradient(circle at 50% 50%, oklch(0.75 0.14 35 / 45%), transparent 70%);
 }
 
 .dark {
-  --aurora-1: radial-gradient(circle at 50% 50%, oklch(0.55 0.19 260 / 55%), transparent 70%);
-  --aurora-2: radial-gradient(circle at 50% 50%, oklch(0.56 0.2 335 / 50%), transparent 70%);
-  --aurora-3: radial-gradient(circle at 50% 50%, oklch(0.62 0.18 45 / 48%), transparent 70%);
-  --aurora-4: radial-gradient(circle at 50% 50%, oklch(0.5 0.22 300 / 40%), transparent 70%);
+  --aurora-1: radial-gradient(circle at 50% 50%, oklch(0.60 0.14 245 / 45%), transparent 70%);
+  --aurora-2: radial-gradient(circle at 50% 50%, oklch(0.58 0.16 295 / 40%), transparent 70%);
+  --aurora-3: radial-gradient(circle at 50% 50%, oklch(0.62 0.14 10 / 40%), transparent 70%);
+  --aurora-4: radial-gradient(circle at 50% 50%, oklch(0.55 0.18 35 / 35%), transparent 70%);
 }
 
 @utility film-grain {
