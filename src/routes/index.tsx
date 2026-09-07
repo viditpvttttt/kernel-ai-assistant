@@ -5,13 +5,17 @@ import { DownloadGrid } from "@/components/kernel/download";
 import { SiteFooter } from "@/components/kernel/footer";
 import { CursorSpotlight } from "@/components/kernel/fx/spotlight";
 import { ModelOrbit } from "@/components/kernel/fx/model-orbit";
+import { AnimatedCounter } from "@/components/kernel/fx/animated-counter";
+import { HoverExpandCards } from "@/components/kernel/fx/hover-expand";
+import { FaqAccordion } from "@/components/kernel/fx/faq-accordion";
+import { VerticalMarquee } from "@/components/kernel/fx/vertical-marquee";
 import { Depth, Tilt3D } from "@/components/kernel/fx/tilt";
 import { Hero } from "@/components/kernel/hero";
 import { ConnectorMarquee } from "@/components/kernel/marquee";
 import { Rise, ScrollRevealText } from "@/components/kernel/reveal";
 import { SiteNav } from "@/components/kernel/site-nav";
 import { SkillCarousel } from "@/components/kernel/skill-carousel";
-import { StickyStack } from "@/components/kernel/sticky-stack";
+
 
 const title = "Kernel by Substrate — agentic multimodal AI with the models included";
 const description =
@@ -58,6 +62,13 @@ const capabilities = [
   },
 ];
 
+const stats = [
+  { value: 50, suffix: "", label: "Tool steps per turn" },
+  { value: 4, suffix: "", label: "Frontier models included" },
+  { value: 0, suffix: "", label: "API keys to start" },
+  { value: 100, suffix: "%", label: "Local-first by default" },
+];
+
 function Index() {
   return (
     <>
@@ -66,14 +77,30 @@ function Index() {
       <main>
         <Hero />
 
-        <section className="mx-auto max-w-3xl px-6 py-32">
+        <section className="mx-auto max-w-3xl px-6 py-20">
           <ScrollRevealText
             className="text-[clamp(1.6rem,4vw,2.6rem)] leading-[1.25] font-light tracking-tight"
             text="Most chat apps stop at the answer. Kernel keeps going — planning, calling tools, checking its own work, and returning something you can actually ship."
           />
         </section>
 
-        <section id="models" className="rule-x relative overflow-hidden py-24">
+        {/* Stats bar */}
+        <section className="rule-x border-b border-border bg-card/30">
+          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-px px-6 py-12 sm:grid-cols-4">
+            {stats.map((s, i) => (
+              <Rise key={s.label} delay={i * 0.08}>
+                <div className="text-center">
+                  <p className="font-display text-4xl font-light text-foreground">
+                    <AnimatedCounter value={s.value} suffix={s.suffix} />
+                  </p>
+                  <p className="mt-2 text-xs text-muted-foreground">{s.label}</p>
+                </div>
+              </Rise>
+            ))}
+          </div>
+        </section>
+
+        <section id="models" className="rule-x relative overflow-hidden py-20">
           <Ambience intensity="soft" />
           <div className="relative mx-auto max-w-5xl px-6 text-center">
             <Rise>
@@ -87,14 +114,14 @@ function Index() {
                 prefer to route through your own account.
               </p>
             </Rise>
-            <div className="mt-12">
+            <div className="mt-10">
               <ModelOrbit />
             </div>
           </div>
         </section>
 
         <section id="harness" className="rule-x">
-          <div className="mx-auto max-w-5xl px-6 pt-24">
+          <div className="mx-auto max-w-5xl px-6 pt-20">
             <Rise>
               <p className="eyebrow">The harness</p>
               <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
@@ -102,10 +129,12 @@ function Index() {
               </h2>
             </Rise>
           </div>
-          <StickyStack />
+          <div className="mt-10">
+            <HoverExpandCards />
+          </div>
         </section>
 
-        <section id="capabilities" className="rule-x py-24">
+        <section id="capabilities" className="rule-x py-20">
           <div className="mx-auto max-w-5xl px-6">
             <Rise>
               <p className="eyebrow">Loaded in</p>
@@ -113,17 +142,17 @@ function Index() {
                 Everything the other assistants ship, in one surface.
               </h2>
             </Rise>
-            <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {capabilities.map((c, i) => (
                 <Rise key={c.label} delay={i * 0.05}>
-                  <Tilt3D max={10} className="h-full">
-                    <Depth z={24} className="h-full">
-                      <div className="h-full rounded-2xl border border-border bg-card p-6 shadow-[0_24px_50px_-42px_var(--ink)]">
+                  <Tilt3D max={8} className="h-full">
+                    <Depth z={20} className="h-full">
+                      <div className="h-full rounded-2xl border border-border bg-card p-5 shadow-[0_20px_40px_-36px_var(--ink)] transition-colors hover:border-foreground/20">
                         <p className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
                           {String(i + 1).padStart(2, "0")}
                         </p>
-                        <h3 className="mt-4 font-display text-xl font-light">{c.label}</h3>
-                        <p className="mt-3 text-sm text-muted-foreground">{c.body}</p>
+                        <h3 className="mt-3 font-display text-lg font-light">{c.label}</h3>
+                        <p className="mt-2 text-sm text-muted-foreground">{c.body}</p>
                       </div>
                     </Depth>
                   </Tilt3D>
@@ -133,7 +162,7 @@ function Index() {
           </div>
         </section>
 
-        <section id="connectors" className="rule-x relative overflow-hidden py-24">
+        <section id="connectors" className="rule-x relative overflow-hidden py-20">
           <Ambience intensity="soft" />
           <div className="relative mx-auto max-w-5xl px-6">
             <Rise>
@@ -147,12 +176,15 @@ function Index() {
               </p>
             </Rise>
           </div>
-          <div className="mt-14">
+          <div className="mt-12">
             <ConnectorMarquee />
+          </div>
+          <div className="mx-auto mt-12 max-w-5xl px-6">
+            <VerticalMarquee />
           </div>
         </section>
 
-        <section id="skills" className="rule-x py-24">
+        <section id="skills" className="rule-x py-20">
           <div className="mx-auto max-w-5xl px-6">
             <Rise>
               <p className="eyebrow">Skills · Automations · Plugins</p>
@@ -160,13 +192,28 @@ function Index() {
                 Teach it once. It keeps the lesson.
               </h2>
             </Rise>
-            <div className="mt-14">
+            <div className="mt-12">
               <SkillCarousel />
             </div>
           </div>
         </section>
 
-        <section id="download" className="rule-x paper-grid py-28">
+        {/* FAQ */}
+        <section id="faq" className="rule-x py-20">
+          <div className="mx-auto max-w-5xl px-6">
+            <Rise>
+              <p className="eyebrow">FAQ</p>
+              <h2 className="mt-5 max-w-2xl text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">
+                Questions, answered.
+              </h2>
+            </Rise>
+            <div className="mt-10">
+              <FaqAccordion />
+            </div>
+          </div>
+        </section>
+
+        <section id="download" className="rule-x paper-grid py-24">
           <div className="mx-auto max-w-5xl px-6">
             <Rise>
               <p className="eyebrow">Get Kernel</p>
@@ -178,7 +225,7 @@ function Index() {
                 build needs nothing at all — the models are included.
               </p>
             </Rise>
-            <div className="mt-12">
+            <div className="mt-10">
               <DownloadGrid />
             </div>
           </div>

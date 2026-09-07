@@ -26,7 +26,7 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       <motion.div
         style={{ y, opacity, scale }}
-        className="relative mx-auto flex min-h-[100svh] max-w-5xl flex-col items-center justify-center px-6 pt-28 pb-20 text-center"
+        className="relative mx-auto flex min-h-[88svh] max-w-5xl flex-col items-center justify-center px-6 pt-24 pb-12 text-center"
       >
         <motion.span
           className="eyebrow flex items-center gap-2"
