@@ -22,6 +22,7 @@ export function SiteNav() {
   const [condensed, setCondensed] = useState(false);
   const { scrollY } = useScroll();
   useMotionValueEvent(scrollY, "change", (v) => setCondensed(v > 40));
+  const { account, signOut } = useAccount();
 
   return (
     <motion.header
