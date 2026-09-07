@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import type { ChatMessage } from "./agent";
+import { useCloudCollection } from "./cloud-sync";
 
 /** Local-first persistence for threads, API keys, connectors, automations, skills and plugins. */
 
