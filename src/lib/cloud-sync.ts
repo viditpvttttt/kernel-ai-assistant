@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
+
+// Tables are synced generically, so queries go through an untyped view of the client.
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const db = supabase as unknown as {
+  from: (table: string) => any;
+};
 import type { Automation, Connector, Skill, Thread } from "./kernel-store";
 
 /**
@@ -165,7 +171,7 @@ export function useCloudCollection<T extends { id: string }>(
     setStatus("syncing");
 
     (async () => {
-      const { data, error } = await supabase.from(mapper.table).select("*");
+      const { data, error } = await db.from(mapper.table).select("*");
       if (!alive) return;
       if (error) {
         setStatus("error");
@@ -178,7 +184,7 @@ export function useCloudCollection<T extends { id: string }>(
       setLocal([...remote, ...localOnly] as T[]);
 
       if (localOnly.length) {
-        await supabase
+        await db
           .from(mapper.table)
           .upsert(localOnly.map((item) => ({ ...mapper.toRow(item), user_id: account.id })));
       }
@@ -196,10 +202,10 @@ export function useCloudCollection<T extends { id: string }>(
     if (!account || merged.current !== account.id || !localReady) return;
     const timer = window.setTimeout(() => {
       if (!local.length) return;
-      void supabase
+      void db
         .from(mapper.table)
         .upsert(local.map((item) => ({ ...mapper.toRow(item), user_id: account.id })))
-        .then(({ error }) => setStatus(error ? "error" : "synced"));
+        .then(({ error }: { error: unknown }) => setStatus(error ? "error" : "synced"));
     }, 900);
     return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -208,7 +214,7 @@ export function useCloudCollection<T extends { id: string }>(
   const removeRemote = useCallback(
     async (id: string) => {
       if (!account) return;
-      await supabase.from(mapper.table).delete().eq("id", id);
+      await db.from(mapper.table).delete().eq("id", id);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [account?.id, mapper.table],
