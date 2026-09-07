@@ -177,8 +177,8 @@ export function useCloudCollection<T extends { id: string }>(
         setStatus("error");
         return;
       }
-      const remote = (data ?? []).map((row) => mapper.fromRow(row as Row));
-      const remoteIds = new Set(remote.map((r) => r.id));
+      const remote = ((data ?? []) as Row[]).map((row) => mapper.fromRow(row));
+      const remoteIds = new Set(remote.map((r: T) => r.id));
       const localOnly = local.filter((item) => !remoteIds.has(item.id));
 
       setLocal([...remote, ...localOnly] as T[]);
