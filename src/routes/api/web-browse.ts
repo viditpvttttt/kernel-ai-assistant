@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 /**
  * Server-side web browsing route. Fetches a URL and returns cleaned text,
- * bypassing browser CORS. Also supports search via DuckDuckGo HTML scrape.
+ * bypassing browser CORS. Also supports search via DuckDuckGo Lite.
  */
 export const Route = createFileRoute("/api/web-browse")({
   server: {
@@ -11,11 +11,14 @@ export const Route = createFileRoute("/api/web-browse")({
         try {
           const { url, query } = await request.json();
 
-          // Mode 1: Web search via DuckDuckGo HTML
+          // Mode 1: Web search via DuckDuckGo Lite
           if (query) {
-            const searchUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
+            const searchUrl = `https://lite.duckduckgo.com/lite/?q=${encodeURIComponent(query)}`;
             const res = await fetch(searchUrl, {
-              headers: { "user-agent": "Mozilla/5.0 (compatible; KernelBot/1.0)" },
+              headers: {
+                "user-agent":
+                  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+              },
             });
             const html = await res.text();
             const results = extractSearchResults(html);
@@ -25,7 +28,10 @@ export const Route = createFileRoute("/api/web-browse")({
           // Mode 2: Fetch a URL and extract readable text
           if (url) {
             const res = await fetch(url, {
-              headers: { "user-agent": "Mozilla/5.0 (compatible; KernelBot/1.0)" },
+              headers: {
+                "user-agent":
+                  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+              },
               signal: AbortSignal.timeout(10000),
             });
             const html = await res.text();
@@ -43,31 +49,40 @@ export const Route = createFileRoute("/api/web-browse")({
   },
 });
 
+/**
+ * Extracts search results from DuckDuckGo Lite HTML.
+ * Lite uses `<a rel="nofollow" href="//duckduckgo.com/l/?uddg=ENCODED_URL">Title</a>`.
+ */
 function extractSearchResults(html: string) {
   const results: { title: string; url: string; snippet: string }[] = [];
-  const blockRe = /<div class="result[^"]*">([\s\S]*?)<\/div>\s*<\/div>/g;
-  const titleRe = /<a[^>]*class="result__a"[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/;
-  const snippetRe = /<a[^>]*class="result__snippet"[^>]*>([\s\S]*?)<\/a>/;
+  const linkRe = /<a rel="nofollow"[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g;
 
   let match;
-  while ((match = blockRe.exec(html)) && results.length < 8) {
-    const block = match[1];
-    const titleMatch = block.match(titleRe);
-    const snippetMatch = block.match(snippetRe);
-    if (titleMatch) {
-      const rawUrl = titleMatch[1];
-      const url = rawUrl.replace(/^\/\/duckduckgo\.com\/l\/\?uddg=/, "").replace(/&rut=[^"]*/, "");
+  while ((match = linkRe.exec(html)) && results.length < 8) {
+    const rawUrl = match[1];
+    const title = stripTags(match[2]).trim();
+    if (!title) continue;
+
+    // Decode the DuckDuckGo redirect URL
+    const uddgMatch = rawUrl.match(/uddg=([^&]+)/);
+    let decodedUrl = rawUrl;
+    if (uddgMatch) {
       try {
-        const decoded = decodeURIComponent(url);
-        results.push({
-          title: stripTags(titleMatch[2]).trim(),
-          url: decoded.startsWith("http") ? decoded : `https://${decoded}`,
-          snippet: snippetMatch ? stripTags(snippetMatch[1]).trim() : "",
-        });
+        decodedUrl = decodeURIComponent(uddgMatch[1]);
       } catch {
-        // skip unparseable URLs
+        decodedUrl = rawUrl;
       }
     }
+    if (!decodedUrl.startsWith("http")) {
+      decodedUrl = `https://${decodedUrl}`;
+    }
+
+    // Extract snippet — the text in the <td> after the link
+    const afterLink = html.slice(match.index + match[0].length, match.index + match[0].length + 500);
+    const snippetMatch = afterLink.match(/<\/a>\s*<\/td>\s*<td[^>]*>([\s\S]*?)<\/td>/);
+    const snippet = snippetMatch ? stripTags(snippetMatch[1]).trim() : "";
+
+    results.push({ title, url: decodedUrl, snippet });
   }
   return results;
 }
