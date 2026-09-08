@@ -3,6 +3,7 @@ import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 
 import { KernelLogo } from "./logo";
+import { TextRoll } from "./fx/text-roll";
 import { ThemeToggle } from "./theme-toggle";
 import { cn } from "@/lib/utils";
 
@@ -43,7 +44,7 @@ export function SiteNav() {
               href={l.href}
               className="relative text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
-              {l.label}
+              <TextRoll>{l.label}</TextRoll>
             </a>
           ))}
         </div>

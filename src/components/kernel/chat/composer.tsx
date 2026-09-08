@@ -14,6 +14,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
+/* ── Web Speech API typing shim ────────────────────────────── */
+type SpeechRecognitionLike = {
+  lang: string;
+  interimResults: boolean;
+  continuous: boolean;
+  onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
+  onerror: (() => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+};
+
+function getSpeechRecognition(): (new () => SpeechRecognitionLike) | null {
+  if (typeof window === "undefined") return null;
+  return (
+    (window as unknown as { SpeechRecognition?: new () => SpeechRecognitionLike }).SpeechRecognition ??
+    (window as unknown as { webkitSpeechRecognition?: new () => SpeechRecognitionLike }).webkitSpeechRecognition ??
+    null
+  );
+}
+
 function fileToDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -42,11 +63,11 @@ export function Composer({
 }) {
   const [text, setText] = useState("");
   const [attachments, setAttachments] = useState<ChatAttachment[]>([]);
-  const [recording, setRecording] = useState(false);
+  const [listening, setListening] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const recorderRef = useRef<MediaRecorder | null>(null);
-  const chunksRef = useRef<BlobPart[]>([]);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+  const baseTextRef = useRef("");
 
   const models = MODEL_PRESETS[modelPreset] ?? [];
   const currentModel = models.find((m) => m.id === model) ?? models[0];
@@ -58,6 +79,11 @@ export function Composer({
     el.style.height = `${Math.min(el.scrollHeight, 208)}px`;
   }, [text]);
 
+  // Cleanup speech recognition on unmount
+  useEffect(() => {
+    return () => recognitionRef.current?.stop();
+  }, []);
+
   async function handleFiles(files: FileList | null) {
     if (!files?.length) return;
     const next: ChatAttachment[] = [];
@@ -68,33 +94,39 @@ export function Composer({
     setAttachments((prev) => [...prev, ...next]);
   }
 
-  async function toggleRecording() {
-    if (recording) {
-      recorderRef.current?.stop();
-      setRecording(false);
+  function toggleListening() {
+    if (listening) {
+      recognitionRef.current?.stop();
+      setListening(false);
       return;
     }
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
-      chunksRef.current = [];
-      recorder.ondataavailable = (e) => chunksRef.current.push(e.data);
-      recorder.onstop = async () => {
-        const blob = new Blob(chunksRef.current, { type: "audio/webm" });
-        const dataUrl = await new Promise<string>((resolve) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.readAsDataURL(blob);
-        });
-        setAttachments((prev) => [...prev, { kind: "audio", dataUrl, name: "voice-note.webm" }]);
-        stream.getTracks().forEach((t) => t.stop());
-      };
-      recorder.start();
-      recorderRef.current = recorder;
-      setRecording(true);
-    } catch {
-      // mic denied or unavailable
-    }
+
+    const SR = getSpeechRecognition();
+    if (!SR) return;
+
+    const recognition = new SR();
+    recognition.lang = "en-US";
+    recognition.interimResults = true;
+    recognition.continuous = true;
+
+    baseTextRef.current = text;
+
+    recognition.onresult = (e) => {
+      let transcript = "";
+      for (let i = 0; i < e.results.length; i++) {
+        transcript += e.results[i][0].transcript;
+      }
+      const base = baseTextRef.current;
+      const next = base ? `${base} ${transcript}` : transcript;
+      setText(next);
+    };
+
+    recognition.onerror = () => setListening(false);
+    recognition.onend = () => setListening(false);
+
+    recognition.start();
+    recognitionRef.current = recognition;
+    setListening(true);
   }
 
   function removeAttachment(index: number) {
@@ -158,7 +190,7 @@ export function Composer({
             handleSend();
           }
         }}
-        placeholder="Message Kernel…"
+        placeholder={listening ? "Listening…" : "Message Kernel…"}
         rows={1}
         className="max-h-52 min-h-6 w-full resize-none border-0 bg-transparent px-1 py-1 text-[15px] shadow-none focus-visible:ring-0"
       />
@@ -183,7 +215,7 @@ export function Composer({
           >
             <Plus className="h-4 w-4" />
           </Button>
-          {attachments.length === 0 && (
+          {attachments.length === 0 && !listening && (
             <span className="hidden items-center gap-1 pl-1 text-[11px] text-muted-foreground sm:flex">
               <Paperclip className="h-3 w-3" /> Shift+Enter for a new line
             </span>
@@ -218,15 +250,27 @@ export function Composer({
             </DropdownMenu>
           )}
 
+          {/* Voice input — speech-to-text */}
           <Button
             type="button"
             variant="ghost"
             size="icon"
-            className={cn("h-8 w-8 rounded-full text-muted-foreground", recording && "text-red-500")}
-            onClick={toggleRecording}
-            aria-label={recording ? "Stop recording" : "Record audio"}
+            className={cn("relative h-8 w-8 rounded-full text-muted-foreground", listening && "text-red-500")}
+            onClick={toggleListening}
+            aria-label={listening ? "Stop listening" : "Start voice input"}
           >
-            {recording ? <Square className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+            {listening ? (
+              <>
+                <motion.span
+                  className="absolute inset-0 rounded-full bg-red-500/20"
+                  animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <Square className="relative h-4 w-4" />
+              </>
+            ) : (
+              <Mic className="h-4 w-4" />
+            )}
           </Button>
 
           <motion.div layout transition={{ duration: 0.15 }}>
