@@ -161,6 +161,40 @@ export function AnimatedGrid({ className }: { className?: string }) {
 }
 
 /**
+ * Single card in the 3D stack — extracted so hooks run at the top level.
+ */
+function StackCard({
+  item,
+  index,
+  total,
+  scrollYProgress,
+}: {
+  item: { title: string; body: string };
+  index: number;
+  total: number;
+  scrollYProgress: import("motion/react").MotionValue<number>;
+}) {
+  const start = index / total;
+  const end = (index + 1) / total;
+  const scale = useTransform(scrollYProgress, [start, end], [1, 0.9]);
+  const y = useTransform(scrollYProgress, [start, end], [0, -30]);
+  const opacity = useTransform(scrollYProgress, [start, end], [1, 0.5]);
+
+  return (
+    <motion.div
+      style={{ scale, y, opacity, zIndex: total - index }}
+      className="sticky top-1/2 mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 shadow-[0_20px_60px_-30px_var(--ink)]"
+    >
+      <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+        0{index + 1}
+      </span>
+      <h3 className="mt-3 font-display text-2xl font-light">{item.title}</h3>
+      <p className="mt-3 text-sm text-muted-foreground">{item.body}</p>
+    </motion.div>
+  );
+}
+
+/**
  * 3D card stack — cards stacked in 3D that fan out on scroll.
  */
 export function CardStack3D({
@@ -173,32 +207,15 @@ export function CardStack3D({
 
   return (
     <div ref={ref} className="relative" style={{ height: `${items.length * 200}px` }}>
-      {items.map((item, i) => {
-        const start = i / items.length;
-        const end = (i + 1) / items.length;
-        const scale = useTransform(scrollYProgress, [start, end], [1, 0.9]);
-        const y = useTransform(scrollYProgress, [start, end], [0, -30]);
-        const opacity = useTransform(scrollYProgress, [start, end], [1, 0.5]);
-
-        return (
-          <motion.div
-            key={item.title}
-            style={{
-              scale,
-              y,
-              opacity,
-              zIndex: items.length - i,
-            }}
-            className="sticky top-1/2 mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 shadow-[0_20px_60px_-30px_var(--ink)]"
-          >
-            <span className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
-              0{i + 1}
-            </span>
-            <h3 className="mt-3 font-display text-2xl font-light">{item.title}</h3>
-            <p className="mt-3 text-sm text-muted-foreground">{item.body}</p>
-          </motion.div>
-        );
-      })}
+      {items.map((item, i) => (
+        <StackCard
+          key={item.title}
+          item={item}
+          index={i}
+          total={items.length}
+          scrollYProgress={scrollYProgress}
+        />
+      ))}
     </div>
   );
 }

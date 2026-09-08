@@ -13,49 +13,44 @@ export function WordPreloader() {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    if (done) return;
+    let i = 0;
     const interval = setInterval(() => {
-      setIndex((prev) => {
-        if (prev >= WORDS.length - 1) {
-          clearInterval(interval);
-          setTimeout(() => setDone(true), 500);
-          return prev;
-        }
-        return prev + 1;
-      });
+      i++;
+      if (i >= WORDS.length) {
+        clearInterval(interval);
+        setTimeout(() => setDone(true), 500);
+      } else {
+        setIndex(i);
+      }
     }, 320);
     return () => clearInterval(interval);
-  }, [done]);
+  }, []);
+
+  if (done) return null;
 
   return (
-    <AnimatePresence>
-      {!done && (
-        <motion.div
-          exit={{ opacity: 0, transition: { duration: 0.7, ease: "easeInOut" } }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
+    <motion.div
+      exit={{ opacity: 0, transition: { duration: 0.7, ease: "easeInOut" } }}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
+    >
+      <div className="relative flex h-14 items-center overflow-hidden">
+        <motion.span
+          key={index}
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: "0%", opacity: 1 }}
+          exit={{ y: "-100%", opacity: 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="font-display text-3xl font-light tracking-tight"
         >
-          <div className="relative flex h-14 items-center overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={index}
-                initial={{ y: "100%", opacity: 0 }}
-                animate={{ y: "0%", opacity: 1 }}
-                exit={{ y: "-100%", opacity: 0 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="font-display text-3xl font-light tracking-tight"
-              >
-                {WORDS[index]}
-              </motion.span>
-            </AnimatePresence>
-          </div>
-          <motion.div
-            className="absolute bottom-[34%] h-px bg-foreground/20"
-            initial={{ width: 0 }}
-            animate={{ width: `${((index + 1) / WORDS.length) * 160}px` }}
-            transition={{ duration: 0.35 }}
-          />
-        </motion.div>
-      )}
-    </AnimatePresence>
+          {WORDS[index]}
+        </motion.span>
+      </div>
+      <motion.div
+        className="absolute bottom-[34%] h-px bg-foreground/20"
+        initial={{ width: 0 }}
+        animate={{ width: `${((index + 1) / WORDS.length) * 160}px` }}
+        transition={{ duration: 0.35 }}
+      />
+    </motion.div>
   );
 }

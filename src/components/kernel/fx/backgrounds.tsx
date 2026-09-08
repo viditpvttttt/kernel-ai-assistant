@@ -43,26 +43,4 @@ export function WaveBackground({ className }: { className?: string }) {
   );
 }
 
-/** Cursor trail — small dots that follow the cursor and fade out. */
-export function CursorTrail() {
-  const trails = Array.from({ length: 6 });
-  return (
-    <div className="pointer-events-none fixed inset-0 z-40 hidden md:block">
-      {trails.map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute h-2 w-2 rounded-full"
-          style={{
-            background: "var(--color-primary)",
-            opacity: 0.3 - i * 0.04,
-          }}
-          animate={{
-            x: [0, 20 * (i % 2 ? 1 : -1), 0],
-            y: [0, 15, 0],
-          }}
-          transition={{ duration: 3 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
-        />
-      ))}
-    </div>
-  );
-}
+
