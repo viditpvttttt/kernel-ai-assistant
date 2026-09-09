@@ -1,4 +1,5 @@
 import { KernelLogo } from "./logo";
+import { TextRoll } from "./fx/text-roll";
 
 const columns = [
   { title: "Product", items: ["Harness", "Connectors", "Skills", "Automations", "Plugins"] },
@@ -18,11 +19,11 @@ export function SiteFooter() {
         }}
       />
       <div className="film-grain absolute inset-0 opacity-30" />
-      <div className="relative mx-auto max-w-5xl px-6 py-16">
-        <div className="flex flex-col gap-12 sm:flex-row sm:justify-between">
+      <div className="relative mx-auto max-w-5xl px-6 py-20">
+        <div className="flex flex-col gap-16 sm:flex-row sm:justify-between">
           <div className="max-w-xs">
             <KernelLogo />
-            <p className="mt-5 text-sm text-muted-foreground">
+            <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
               Kernel runs on the API keys you already own. Nothing leaves your machine unless you
               point it somewhere.
             </p>
@@ -31,14 +32,14 @@ export function SiteFooter() {
             {columns.map((col) => (
               <div key={col.title}>
                 <p className="eyebrow">{col.title}</p>
-                <ul className="mt-4 space-y-2 text-sm">
+                <ul className="mt-5 space-y-3 text-sm">
                   {col.items.map((item) => (
                     <li key={item}>
                       <a
                         href="#download"
-                        className="text-muted-foreground transition-colors hover:text-foreground"
+                        className="inline-block text-muted-foreground transition-colors hover:text-foreground"
                       >
-                        {item}
+                        <TextRoll>{item}</TextRoll>
                       </a>
                     </li>
                   ))}
@@ -47,9 +48,14 @@ export function SiteFooter() {
             ))}
           </div>
         </div>
-        <p className="mt-16 font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
-          Kernel · bring your own keys
-        </p>
+        <div className="mt-20 flex items-center justify-between">
+          <p className="font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
+            Kernel · bring your own keys
+          </p>
+          <p className="font-mono text-[11px] tracking-widest text-muted-foreground/60 uppercase">
+            © {new Date().getFullYear()}
+          </p>
+        </div>
       </div>
     </footer>
   );

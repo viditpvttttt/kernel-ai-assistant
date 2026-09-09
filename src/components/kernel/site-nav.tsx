@@ -52,9 +52,9 @@ export function SiteNav() {
           <ThemeToggle />
           <Link
             to="/chat"
-            className="rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground transition-transform hover:scale-[1.03]"
+            className="overflow-hidden rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground transition-transform hover:scale-[1.03]"
           >
-            Open Kernel
+            <TextRoll>Open Kernel</TextRoll>
           </Link>
         </div>
       </nav>

@@ -6,6 +6,7 @@ import { Streamdown } from "streamdown";
 import type { ChatMessage } from "@/lib/agent";
 import { Button } from "@/components/ui/button";
 import { KernelMark } from "@/components/kernel/logo";
+import { TextRoll } from "@/components/kernel/fx/text-roll";
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
@@ -103,28 +104,59 @@ export function MessageList({
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.4 }}
-        className="flex flex-1 flex-col items-center justify-center gap-6 px-6 text-center"
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="flex flex-1 flex-col items-center justify-center gap-8 px-6 text-center"
       >
-        <div>
-          <p className="text-2xl font-medium text-foreground">Ready when you are.</p>
-        </div>
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="relative"
+        >
+          <div className="absolute inset-0 -z-10 blur-2xl opacity-30">
+            <KernelMark className="h-10 w-20" />
+          </div>
+          <KernelMark className="h-10 w-20" />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <h2 className="font-display text-3xl font-extralight tracking-tight text-foreground">
+            Ready when you are.
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Ask anything — Kernel will plan, search, and ship.
+          </p>
+        </motion.div>
+
         {onPickSuggestion && (
-          <div className="grid w-full max-w-md grid-cols-1 gap-2 sm:grid-cols-2">
-            {SUGGESTIONS.map((s) => (
-              <button
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="grid w-full max-w-lg grid-cols-1 gap-2.5 sm:grid-cols-2"
+          >
+            {SUGGESTIONS.map((s, i) => (
+              <motion.button
                 key={s.label}
                 type="button"
                 onClick={() => onPickSuggestion(s.label)}
-                className="group flex items-center gap-2.5 rounded-xl border border-border bg-card/60 px-3.5 py-2.5 text-left text-sm text-muted-foreground transition-colors hover:border-border hover:bg-accent/50 hover:text-foreground"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + i * 0.06, duration: 0.5 }}
+                whileHover={{ y: -2 }}
+                className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-border bg-card/50 px-4 py-3 text-left text-sm text-muted-foreground backdrop-blur-sm transition-all duration-300 hover:border-foreground/20 hover:bg-card hover:text-foreground hover:shadow-[0_8px_30px_-12px_var(--ink)]"
               >
-                <span className="font-mono text-xs text-muted-foreground/70 transition-colors group-hover:text-foreground">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-muted text-xs transition-colors group-hover:bg-foreground group-hover:text-background">
                   {s.icon}
                 </span>
-                <span className="truncate">{s.label}</span>
-              </button>
+                <span className="truncate font-light">{s.label}</span>
+              </motion.button>
             ))}
-          </div>
+          </motion.div>
         )}
       </motion.div>
     );

@@ -261,7 +261,7 @@ function ChatPage() {
   return (
     <div className="relative flex h-svh flex-col overflow-hidden bg-background">
       <Ambience intensity="soft" className="opacity-50" />
-      <header className="relative z-10 flex items-center justify-between border-b border-border bg-background/70 px-4 py-2.5 backdrop-blur-xl">
+      <header className="relative z-10 flex items-center justify-between border-b border-border/60 bg-background/60 px-4 py-2.5 backdrop-blur-2xl">
         <Link to="/" aria-label="Kernel home">
           <KernelLogo byline={false} />
         </Link>
