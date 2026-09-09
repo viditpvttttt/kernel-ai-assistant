@@ -2,6 +2,9 @@ import { Plus, Search, Settings, Trash2, SquarePen, Plug, Sparkles, FileText, Me
 import { AnimatePresence, motion } from "motion/react";
 import { useMemo, useState } from "react";
 
+const springSoft = { type: "spring" as const, stiffness: 320, damping: 32, mass: 0.7 };
+const springSnappy = { type: "spring" as const, stiffness: 500, damping: 30, mass: 0.6 };
+
 import type { Thread } from "@/lib/kernel-store";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -74,14 +77,17 @@ export function ThreadSidebar({
       {/* Header */}
       <div className="flex items-center justify-between px-3 pt-3 pb-1">
         <span className="font-display text-base font-semibold text-sidebar-foreground">Kernel</span>
-        <button
+        <motion.button
           type="button"
           onClick={onNew}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
+          transition={springSnappy}
           className="flex h-7 w-7 items-center justify-center rounded-lg text-sidebar-foreground transition-colors hover:bg-sidebar-accent"
           aria-label="New chat"
         >
           <SquarePen className="h-4 w-4" />
-        </button>
+        </motion.button>
       </div>
 
       {/* Search */}
@@ -99,36 +105,44 @@ export function ThreadSidebar({
 
       {/* Quick actions */}
       <div className="flex flex-col gap-0.5 px-2 pb-2">
-        <button
+        <motion.button
           type="button"
           onClick={onNew}
+          whileHover={{ x: 2 }}
+          transition={springSoft}
           className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm text-sidebar-foreground transition-colors hover:bg-sidebar-accent"
         >
           <Plus className="h-4 w-4" /> New chat
-        </button>
+        </motion.button>
         {onOpenSettings && (
           <>
-            <button
+            <motion.button
               type="button"
               onClick={() => onOpenSettings("connectors")}
+              whileHover={{ x: 2 }}
+              transition={springSoft}
               className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm text-sidebar-foreground transition-colors hover:bg-sidebar-accent"
             >
               <Plug className="h-4 w-4" /> Connectors &amp; MCP
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               type="button"
               onClick={() => onOpenSettings("skills")}
+              whileHover={{ x: 2 }}
+              transition={springSoft}
               className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm text-sidebar-foreground transition-colors hover:bg-sidebar-accent"
             >
               <Sparkles className="h-4 w-4" /> Skills
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               type="button"
               onClick={() => onOpenSettings("plugins")}
+              whileHover={{ x: 2 }}
+              transition={springSoft}
               className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm text-sidebar-foreground transition-colors hover:bg-sidebar-accent"
             >
               <FileText className="h-4 w-4" /> Plugins &amp; Tools
-            </button>
+            </motion.button>
           </>
         )}
       </div>
@@ -157,17 +171,24 @@ export function ThreadSidebar({
                     <motion.div
                       key={t.id}
                       layout
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -8, height: 0 }}
-                      transition={{ duration: 0.18 }}
+                      initial={{ opacity: 0, x: -12, scale: 0.95 }}
+                      animate={{ opacity: 1, x: 0, scale: 1 }}
+                      exit={{ opacity: 0, x: -12, scale: 0.95, height: 0 }}
+                      transition={springSoft}
                       className={cn(
                         "group relative flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm transition-colors",
                         t.id === activeId
-                          ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                          ? "text-sidebar-accent-foreground"
                           : "text-sidebar-foreground hover:bg-sidebar-accent/60",
                       )}
                     >
+                      {t.id === activeId && (
+                        <motion.div
+                          layoutId="activeThread"
+                          className="absolute inset-0 rounded-lg bg-sidebar-accent"
+                          transition={springSoft}
+                        />
+                      )}
                       <button
                         type="button"
                         onClick={() => onSelect(t.id)}
@@ -178,14 +199,17 @@ export function ThreadSidebar({
                           {formatTime(t.createdAt)} · {t.messages.length} {t.messages.length === 1 ? "msg" : "msgs"}
                         </span>
                       </button>
-                      <button
+                      <motion.button
                         type="button"
                         onClick={() => onDelete(t.id)}
+                        whileHover={{ scale: 1.15 }}
+                        whileTap={{ scale: 0.9 }}
+                        transition={springSnappy}
                         className="relative z-10 opacity-0 transition-opacity group-hover:opacity-100"
                         aria-label="Delete session"
                       >
                         <Trash2 className="h-3.5 w-3.5 text-muted-foreground" />
-                      </button>
+                      </motion.button>
                     </motion.div>
                   ))}
                 </AnimatePresence>
@@ -197,13 +221,15 @@ export function ThreadSidebar({
       {/* Footer */}
       <div className="border-t border-sidebar-border p-2">
         {onOpenSettings && (
-          <button
+          <motion.button
             type="button"
             onClick={() => onOpenSettings("keys")}
+            whileHover={{ x: 2 }}
+            transition={springSoft}
             className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm text-sidebar-foreground transition-colors hover:bg-sidebar-accent"
           >
             <Settings className="h-4 w-4" /> Settings
-          </button>
+          </motion.button>
         )}
       </div>
     </aside>

@@ -51,8 +51,14 @@ function CopyButton({ text }: { text: string }) {
 }
 
 const messageVariants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 16, scale: 0.96, filter: "blur(6px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: { type: "spring", stiffness: 260, damping: 30, mass: 0.8 },
+  },
 };
 
 const SUGGESTIONS = [
@@ -144,11 +150,12 @@ export function MessageList({
                 key={s.label}
                 type="button"
                 onClick={() => onPickSuggestion(s.label)}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + i * 0.06, duration: 0.5 }}
-                whileHover={{ y: -2 }}
-                className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-border bg-card/50 px-4 py-3 text-left text-sm text-muted-foreground backdrop-blur-sm transition-all duration-300 hover:border-foreground/20 hover:bg-card hover:text-foreground hover:shadow-[0_8px_30px_-12px_var(--ink)]"
+                initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.5 + i * 0.06, type: "spring", stiffness: 300, damping: 28, mass: 0.7 }}
+                whileHover={{ y: -3, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-border bg-card/50 px-4 py-3 text-left text-sm text-muted-foreground backdrop-blur-sm transition-colors duration-300 hover:border-foreground/20 hover:bg-card hover:text-foreground hover:shadow-[0_8px_30px_-12px_var(--ink)]"
               >
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-muted text-xs transition-colors group-hover:bg-foreground group-hover:text-background">
                   {s.icon}
@@ -180,7 +187,6 @@ export function MessageList({
                 variants={messageVariants}
                 initial="hidden"
                 animate="visible"
-                transition={{ duration: 0.25, ease: "easeOut" }}
                 className="group flex flex-col items-end gap-1.5"
               >
                 {m.attachments && m.attachments.length > 0 && (
@@ -200,9 +206,13 @@ export function MessageList({
                   </div>
                 )}
                 {m.content && !editing && (
-                  <div className="max-w-[85%] rounded-3xl bg-muted px-4 py-2.5 text-[15px] leading-relaxed whitespace-pre-wrap text-foreground">
+                  <motion.div
+                    whileHover={{ scale: 1.005 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    className="max-w-[85%] rounded-3xl bg-muted px-4 py-2.5 text-[15px] leading-relaxed whitespace-pre-wrap text-foreground"
+                  >
                     {m.content}
-                  </div>
+                  </motion.div>
                 )}
                 {editing && (
                   <div className="w-full max-w-[85%] space-y-2">
@@ -259,7 +269,6 @@ export function MessageList({
               variants={messageVariants}
               initial="hidden"
               animate="visible"
-              transition={{ duration: 0.25, ease: "easeOut" }}
               className="group flex gap-3"
             >
               <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-card">
@@ -311,10 +320,10 @@ export function MessageList({
         {streamingText !== undefined && (
           <motion.div
             key="__streaming"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0, y: 16, scale: 0.96, filter: "blur(6px)" }}
+            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 0.96, filter: "blur(6px)" }}
+            transition={{ type: "spring", stiffness: 260, damping: 30, mass: 0.8 }}
             className="flex gap-3"
           >
             <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-card">
@@ -354,10 +363,12 @@ export function MessageList({
           <motion.button
             type="button"
             onClick={jumpToBottom}
-            initial={{ opacity: 0, y: 8, scale: 0.9 }}
+            initial={{ opacity: 0, y: 12, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.9 }}
-            transition={{ duration: 0.15 }}
+            exit={{ opacity: 0, y: 12, scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 400, damping: 28, mass: 0.7 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-foreground shadow-lg hover:bg-accent"
             aria-label="Jump to latest message"
           >

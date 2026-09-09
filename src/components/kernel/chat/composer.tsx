@@ -14,6 +14,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
+const springSnappy = { type: "spring" as const, stiffness: 500, damping: 30, mass: 0.6 };
+const springSend = { type: "spring" as const, stiffness: 400, damping: 22, mass: 0.7 };
+
 /* ── Web Speech API typing shim ────────────────────────────── */
 type SpeechRecognitionLike = {
   lang: string;
@@ -205,16 +208,18 @@ export function Composer({
             hidden
             onChange={(e) => handleFiles(e.target.files)}
           />
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 rounded-full text-muted-foreground"
-            onClick={() => fileInputRef.current?.click()}
-            aria-label="Attach image"
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
+          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} transition={springSnappy}>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full text-muted-foreground"
+              onClick={() => fileInputRef.current?.click()}
+              aria-label="Attach image"
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
+          </motion.div>
           {attachments.length === 0 && !listening && (
             <span className="hidden items-center gap-1 pl-1 text-[11px] text-muted-foreground sm:flex">
               <Paperclip className="h-3 w-3" /> Shift+Enter for a new line
@@ -251,34 +256,36 @@ export function Composer({
           )}
 
           {/* Voice input — speech-to-text */}
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className={cn("relative h-8 w-8 rounded-full text-muted-foreground", listening && "text-red-500")}
-            onClick={toggleListening}
-            aria-label={listening ? "Stop listening" : "Start voice input"}
-          >
-            {listening ? (
-              <>
-                <motion.span
-                  className="absolute inset-0 rounded-full bg-red-500/20"
-                  animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <Square className="relative h-4 w-4" />
-              </>
-            ) : (
-              <Mic className="h-4 w-4" />
-            )}
-          </Button>
+          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} transition={springSnappy}>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className={cn("relative h-8 w-8 rounded-full text-muted-foreground", listening && "text-red-500")}
+              onClick={toggleListening}
+              aria-label={listening ? "Stop listening" : "Start voice input"}
+            >
+              {listening ? (
+                <>
+                  <motion.span
+                    className="absolute inset-0 rounded-full bg-red-500/20"
+                    animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <Square className="relative h-4 w-4" />
+                </>
+              ) : (
+                <Mic className="h-4 w-4" />
+              )}
+            </Button>
+          </motion.div>
 
-          <motion.div layout transition={{ duration: 0.15 }}>
+          <motion.div layout transition={springSnappy}>
             {streaming ? (
               <motion.div
                 initial={{ scale: 0.7, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                transition={springSend}
               >
                 <Button
                   type="button"
@@ -301,8 +308,9 @@ export function Composer({
               <motion.div
                 initial={{ scale: 0.7, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
+                whileHover={{ scale: 1.06 }}
                 whileTap={{ scale: 0.88 }}
-                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                transition={springSend}
               >
                 <Button
                   type="button"
