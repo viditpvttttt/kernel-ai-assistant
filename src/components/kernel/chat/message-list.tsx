@@ -155,7 +155,7 @@ export function MessageList({
                 transition={{ delay: 0.5 + i * 0.06, type: "spring", stiffness: 300, damping: 28, mass: 0.7 }}
                 whileHover={{ y: -3, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-border bg-card/50 px-4 py-3 text-left text-sm text-muted-foreground backdrop-blur-sm transition-colors duration-300 hover:border-foreground/20 hover:bg-card hover:text-foreground hover:shadow-[0_8px_30px_-12px_var(--ink)]"
+                className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-border bg-card/50 px-4 py-3 text-left text-sm text-muted-foreground backdrop-blur-sm transition-all duration-300 hover:border-foreground/20 hover:bg-card hover:text-foreground hover:shadow-[0_12px_36px_-12px_var(--ink)] hover:-translate-y-0.5"
               >
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-muted text-xs transition-colors group-hover:bg-foreground group-hover:text-background">
                   {s.icon}
@@ -197,7 +197,7 @@ export function MessageList({
                           key={ai}
                           src={a.dataUrl}
                           alt={a.name ?? "attachment"}
-                          className="h-28 w-28 rounded-xl border border-border object-cover"
+                          className="h-28 w-28 rounded-2xl border border-border object-cover shadow-[0_4px_20px_-8px_var(--ink)]"
                         />
                       ) : (
                         <audio key={ai} src={a.dataUrl} controls className="h-9 max-w-[220px]" />
@@ -209,7 +209,7 @@ export function MessageList({
                   <motion.div
                     whileHover={{ scale: 1.005 }}
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    className="max-w-[85%] rounded-3xl bg-muted px-4 py-2.5 text-[15px] leading-relaxed whitespace-pre-wrap text-foreground"
+                    className="max-w-[85%] rounded-3xl rounded-br-lg bg-muted px-4 py-2.5 text-[15px] leading-relaxed whitespace-pre-wrap text-foreground shadow-[0_2px_12px_-6px_var(--ink)]"
                   >
                     {m.content}
                   </motion.div>
@@ -286,7 +286,7 @@ export function MessageList({
                           transition={{ duration: 0.3 }}
                           src={a.dataUrl}
                           alt={a.name ?? "generated image"}
-                          className="max-h-72 rounded-xl border border-border object-cover"
+                          className="max-h-72 rounded-2xl border border-border object-cover shadow-[0_4px_20px_-8px_var(--ink)]"
                         />
                       ) : (
                         <audio key={ai} src={a.dataUrl} controls className="h-9 max-w-[220px]" />

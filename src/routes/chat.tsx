@@ -10,6 +10,7 @@ import { Composer } from "@/components/kernel/chat/composer";
 import { MessageList } from "@/components/kernel/chat/message-list";
 import { ModelPicker } from "@/components/kernel/chat/model-picker";
 import { PersonaPicker } from "@/components/kernel/chat/persona-picker";
+import { FreeModal } from "@/components/kernel/chat/free-modal";
 import { SettingsPanel, type SettingsSection } from "@/components/kernel/chat/settings-panel";
 import { ThreadSidebar } from "@/components/kernel/chat/sidebar";
 import { StepTrace } from "@/components/kernel/chat/step-trace";
@@ -260,6 +261,7 @@ function ChatPage() {
 
   return (
     <div className="relative flex h-svh flex-col overflow-hidden bg-background">
+      <FreeModal />
       <Ambience intensity="soft" className="opacity-50" />
       <header className="relative z-10 flex items-center justify-between border-b border-border/60 bg-background/60 px-4 py-2.5 backdrop-blur-2xl">
         <Link to="/" aria-label="Kernel home">
