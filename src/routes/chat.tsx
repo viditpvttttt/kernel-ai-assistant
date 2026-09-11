@@ -342,6 +342,10 @@ function ChatPage() {
           }}
           onNew={handleNew}
           onDelete={handleDelete}
+          onRename={(id, title) => {
+            const t = threads.find((t) => t.id === id);
+            if (t) upsert({ ...t, title });
+          }}
           onOpenSettings={(section) => {
             if (section) setSettingsSection(section as SettingsSection);
             setSettingsOpen(true);

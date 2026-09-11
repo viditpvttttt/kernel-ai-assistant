@@ -1,6 +1,6 @@
-import { Plus, Search, Settings, Trash2, SquarePen, Plug, Sparkles, FileText, MessageSquare } from "lucide-react";
+import { Plus, Search, Settings, Trash2, SquarePen, Plug, Sparkles, FileText, MessageSquare, Check, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const springSoft = { type: "spring" as const, stiffness: 320, damping: 32, mass: 0.7 };
 const springSnappy = { type: "spring" as const, stiffness: 500, damping: 30, mass: 0.6 };
@@ -8,6 +8,7 @@ const springSnappy = { type: "spring" as const, stiffness: 500, damping: 30, mas
 import type { Thread } from "@/lib/kernel-store";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { SubstrateLinks } from "@/components/kernel/chat/substrate-links";
 import { cn } from "@/lib/utils";
 
 /** Groups threads by relative date bucket for easy history navigation. */
@@ -43,6 +44,7 @@ export function ThreadSidebar({
   onNew,
   onDelete,
   onOpenSettings,
+  onRename,
 }: {
   threads: Thread[];
   activeId: string | null;
@@ -50,8 +52,35 @@ export function ThreadSidebar({
   onNew: () => void;
   onDelete: (id: string) => void;
   onOpenSettings?: (section?: string) => void;
+  onRename?: (id: string, title: string) => void;
 }) {
   const [query, setQuery] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editValue, setEditValue] = useState("");
+  const editInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (editingId && editInputRef.current) {
+      editInputRef.current.focus();
+      editInputRef.current.select();
+    }
+  }, [editingId]);
+
+  function startRename(t: Thread) {
+    setEditingId(t.id);
+    setEditValue(t.title);
+  }
+
+  function commitRename() {
+    if (editingId && onRename && editValue.trim()) {
+      onRename(editingId, editValue.trim());
+    }
+    setEditingId(null);
+  }
+
+  function cancelRename() {
+    setEditingId(null);
+  }
 
   const { grouped, totalCount } = useMemo(() => {
     const sorted = [...threads].sort((a, b) => b.createdAt - a.createdAt);
@@ -167,7 +196,9 @@ export function ThreadSidebar({
                   {bucket}
                 </p>
                 <AnimatePresence initial={false}>
-                  {grouped[bucket].map((t) => (
+                  {grouped[bucket].map((t) => {
+                    const isEditing = editingId === t.id;
+                    return (
                     <motion.div
                       key={t.id}
                       layout
@@ -182,36 +213,92 @@ export function ThreadSidebar({
                           : "text-sidebar-foreground hover:bg-sidebar-accent/60",
                       )}
                     >
-                      {t.id === activeId && (
+                      {t.id === activeId && !isEditing && (
                         <motion.div
                           layoutId="activeThread"
                           className="absolute inset-0 rounded-lg bg-sidebar-accent"
                           transition={springSoft}
                         />
                       )}
-                      <button
-                        type="button"
-                        onClick={() => onSelect(t.id)}
-                        className="relative z-10 flex-1 truncate text-left"
-                      >
-                        <span className="block truncate">{t.title}</span>
-                        <span className="mt-0.5 block text-[10px] text-muted-foreground">
-                          {formatTime(t.createdAt)} · {t.messages.length} {t.messages.length === 1 ? "msg" : "msgs"}
-                        </span>
-                      </button>
-                      <motion.button
-                        type="button"
-                        onClick={() => onDelete(t.id)}
-                        whileHover={{ scale: 1.15 }}
-                        whileTap={{ scale: 0.9 }}
-                        transition={springSnappy}
-                        className="relative z-10 opacity-0 transition-opacity group-hover:opacity-100"
-                        aria-label="Delete session"
-                      >
-                        <Trash2 className="h-3.5 w-3.5 text-muted-foreground" />
-                      </motion.button>
+                      {isEditing ? (
+                        <div className="relative z-10 flex flex-1 items-center gap-1">
+                          <input
+                            ref={editInputRef}
+                            value={editValue}
+                            onChange={(e) => setEditValue(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") commitRename();
+                              if (e.key === "Escape") cancelRename();
+                            }}
+                            className="w-full rounded-md bg-background px-2 py-1 text-sm text-foreground outline-none ring-1 ring-border focus:ring-foreground/30"
+                          />
+                          <motion.button
+                            type="button"
+                            onClick={commitRename}
+                            whileHover={{ scale: 1.15 }}
+                            whileTap={{ scale: 0.9 }}
+                            transition={springSnappy}
+                            className="flex h-5 w-5 items-center justify-center rounded text-foreground hover:bg-accent"
+                            aria-label="Save name"
+                          >
+                            <Check className="h-3.5 w-3.5" />
+                          </motion.button>
+                          <motion.button
+                            type="button"
+                            onClick={cancelRename}
+                            whileHover={{ scale: 1.15 }}
+                            whileTap={{ scale: 0.9 }}
+                            transition={springSnappy}
+                            className="flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:bg-accent"
+                            aria-label="Cancel rename"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </motion.button>
+                        </div>
+                      ) : (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => onSelect(t.id)}
+                            onDoubleClick={() => onRename && startRename(t)}
+                            className="relative z-10 flex-1 truncate text-left"
+                          >
+                            <span className="block truncate">{t.title}</span>
+                            <span className="mt-0.5 block text-[10px] text-muted-foreground">
+                              {formatTime(t.createdAt)} · {t.messages.length} {t.messages.length === 1 ? "msg" : "msgs"}
+                            </span>
+                          </button>
+                          <div className="relative z-10 flex items-center gap-0.5 opacity-0 transition-opacity group-hover:opacity-100">
+                            {onRename && (
+                              <motion.button
+                                type="button"
+                                onClick={() => startRename(t)}
+                                whileHover={{ scale: 1.15 }}
+                                whileTap={{ scale: 0.9 }}
+                                transition={springSnappy}
+                                className="flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground"
+                                aria-label="Rename chat"
+                              >
+                                <SquarePen className="h-3 w-3" />
+                              </motion.button>
+                            )}
+                            <motion.button
+                              type="button"
+                              onClick={() => onDelete(t.id)}
+                              whileHover={{ scale: 1.15 }}
+                              whileTap={{ scale: 0.9 }}
+                              transition={springSnappy}
+                              className="flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:bg-accent hover:text-foreground"
+                              aria-label="Delete session"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </motion.button>
+                          </div>
+                        </>
+                      )}
                     </motion.div>
-                  ))}
+                    );
+                  })}
                 </AnimatePresence>
               </div>
             ))}
@@ -231,6 +318,9 @@ export function ThreadSidebar({
             <Settings className="h-4 w-4" /> Settings
           </motion.button>
         )}
+        <div className="mt-1 flex items-center justify-between border-t border-sidebar-border/50 px-2 pt-2">
+          <SubstrateLinks />
+        </div>
       </div>
     </aside>
   );

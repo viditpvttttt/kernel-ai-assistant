@@ -7,6 +7,7 @@ import type { ChatMessage } from "@/lib/agent";
 import { Button } from "@/components/ui/button";
 import { KernelMark } from "@/components/kernel/logo";
 import { TextRoll } from "@/components/kernel/fx/text-roll";
+import { cn } from "@/lib/utils";
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
@@ -62,10 +63,12 @@ const messageVariants = {
 };
 
 const SUGGESTIONS = [
-  { icon: "✦", label: "Brainstorm ideas for a project" },
-  { icon: "✎", label: "Help me write something" },
-  { icon: "⌘", label: "Explain a concept simply" },
-  { icon: "⊳", label: "Write or debug some code" },
+  { icon: "✦", label: "Brainstorm ideas for a project", gradient: "from-violet-500/20 to-fuchsia-500/20" },
+  { icon: "✎", label: "Help me write something", gradient: "from-blue-500/20 to-cyan-500/20" },
+  { icon: "⌘", label: "Explain a concept simply", gradient: "from-amber-500/20 to-orange-500/20" },
+  { icon: "⊳", label: "Write or debug some code", gradient: "from-emerald-500/20 to-teal-500/20" },
+  { icon: "◈", label: "Plan a trip or event", gradient: "from-pink-500/20 to-rose-500/20" },
+  { icon: "∑", label: "Summarize a long document", gradient: "from-indigo-500/20 to-purple-500/20" },
 ];
 
 export function MessageList({
@@ -143,7 +146,7 @@ export function MessageList({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="grid w-full max-w-lg grid-cols-1 gap-2.5 sm:grid-cols-2"
+            className="flex w-full max-w-2xl flex-wrap items-center justify-center gap-2"
           >
             {SUGGESTIONS.map((s, i) => (
               <motion.button
@@ -153,13 +156,17 @@ export function MessageList({
                 initial={{ opacity: 0, y: 12, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ delay: 0.5 + i * 0.06, type: "spring", stiffness: 300, damping: 28, mass: 0.7 }}
-                whileHover={{ y: -3, scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-border bg-card/50 px-4 py-3 text-left text-sm text-muted-foreground backdrop-blur-sm transition-all duration-300 hover:border-foreground/20 hover:bg-card hover:text-foreground hover:shadow-[0_12px_36px_-12px_var(--ink)] hover:-translate-y-0.5"
+                whileHover={{ y: -3, scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                className="group relative flex items-center gap-2 overflow-hidden rounded-full border border-border bg-card/50 px-3.5 py-2 text-left text-xs text-muted-foreground backdrop-blur-sm transition-all duration-300 hover:border-foreground/20 hover:bg-card hover:text-foreground hover:shadow-[0_8px_28px_-10px_var(--ink)]"
               >
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-muted text-xs transition-colors group-hover:bg-foreground group-hover:text-background">
+                <motion.span
+                  whileHover={{ rotate: 12 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                  className={cn("flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gradient-to-br text-[10px] transition-colors", s.gradient)}
+                >
                   {s.icon}
-                </span>
+                </motion.span>
                 <span className="truncate font-light">{s.label}</span>
               </motion.button>
             ))}
