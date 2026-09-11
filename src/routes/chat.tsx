@@ -10,6 +10,7 @@ import { Composer } from "@/components/kernel/chat/composer";
 import { MessageList } from "@/components/kernel/chat/message-list";
 import { ModelPicker } from "@/components/kernel/chat/model-picker";
 import { PersonaPicker } from "@/components/kernel/chat/persona-picker";
+import { ChatFooter } from "@/components/kernel/chat/chat-footer";
 import { FreeModal } from "@/components/kernel/chat/free-modal";
 import { SettingsPanel, type SettingsSection } from "@/components/kernel/chat/settings-panel";
 import { ThreadSidebar } from "@/components/kernel/chat/sidebar";
@@ -402,6 +403,7 @@ function ChatPage() {
               <p className="mt-2 text-center text-[11px] text-muted-foreground">
                 Kernel can make mistakes. Verify important information.
               </p>
+              <ChatFooter />
             </div>
           </div>
         </div>

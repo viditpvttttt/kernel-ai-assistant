@@ -14,6 +14,7 @@ import { PerspectiveText, RollingText, ScrollProgressBar } from "@/components/ke
 import { BlobCard, GooeyHover, MouseGlow } from "@/components/kernel/fx/hover-effects";
 import { AnimatedGrid, CardStack3D, FlipCard, MagneticText, ParallaxLayers, TextScramble } from "@/components/kernel/fx/advanced-3d";
 import { Depth, Tilt3D } from "@/components/kernel/fx/tilt";
+import { FloatingShowcase } from "@/components/kernel/floating-showcase";
 import { Hero } from "@/components/kernel/hero";
 import { ConnectorMarquee } from "@/components/kernel/marquee";
 import { Rise, ScrollRevealText } from "@/components/kernel/reveal";
@@ -141,6 +142,9 @@ function Index() {
             </div>
           </div>
         </section>
+
+        {/* 3D Floating Showcase — Plan, Act, Verify, Remember */}
+        <FloatingShowcase />
 
         {/* Harness — HoverExpandCards */}
         <section id="harness" className="rule-x">

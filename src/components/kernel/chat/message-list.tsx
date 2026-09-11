@@ -117,27 +117,38 @@ export function MessageList({
         className="flex flex-1 flex-col items-center justify-center gap-8 px-6 text-center"
       >
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ scale: 0.8, opacity: 0, rotateY: -20 }}
+          animate={{ scale: 1, opacity: 1, rotateY: 0 }}
+          transition={{ delay: 0.15, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          style={{ transformStyle: "preserve-3d", perspective: 800 }}
           className="relative"
         >
-          <div className="absolute inset-0 -z-10 blur-2xl opacity-30">
+          <motion.div
+            animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.35, 0.2] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute inset-0 -z-10 blur-3xl"
+          >
             <KernelMark className="h-10 w-20" />
-          </div>
-          <KernelMark className="h-10 w-20" />
+          </motion.div>
+          <motion.div
+            animate={{ y: [0, -4, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <KernelMark className="h-10 w-20" />
+          </motion.div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="flex flex-col items-center"
         >
-          <h2 className="font-display text-3xl font-extralight tracking-tight text-foreground">
-            Ready when you are.
+          <h2 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-extralight tracking-tight text-foreground">
+            What shall we build today?
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Ask anything — Kernel will plan, search, and ship.
+          <p className="mt-3 text-sm text-muted-foreground">
+            Pick a prompt below, or just start typing.
           </p>
         </motion.div>
 
