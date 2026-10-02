@@ -1,0 +1,37 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [
+    {
+      "name": "OPENAI_API_KEY",
+      "description": "OpenAI API key for the chat proxy at /api/chat/openai",
+      "requiredAtBoot": false,
+      "generatedForDevelopment": false
+    },
+    {
+      "name": "GOOGLE_API_KEY",
+      "description": "Google AI (Gemini) API key for the chat proxy at /api/chat/google",
+      "requiredAtBoot": false,
+      "generatedForDevelopment": false
+    },
+    {
+      "name": "ANTHROPIC_API_KEY",
+      "description": "Anthropic API key for the chat proxy at /api/chat/anthropic",
+      "requiredAtBoot": false,
+      "generatedForDevelopment": false
+    },
+    {
+      "name": "XAI_API_KEY",
+      "description": "xAI (Grok) API key for the chat proxy at /api/chat/grok",
+      "requiredAtBoot": false,
+      "generatedForDevelopment": false
+    },
+    {
+      "name": "LOVABLE_API_KEY",
+      "description": "Lovable Cloud API key for the built-in Kernel model at /api/chat/kernel",
+      "requiredAtBoot": false,
+      "generatedForDevelopment": false
+    }
+  ]
+}
