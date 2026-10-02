@@ -10,7 +10,7 @@ services:
       - web_node_modules:/app/node_modules
     environment:
       - BASE44_PUBLIC_HOST_SUFFIX=${BASE44_PUBLIC_HOST_SUFFIX}
-      - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=${BASE44_PUBLIC_HOST_SUFFIX}
+      - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS
       - SUPABASE_URL=${SUPABASE_URL:-https://c--8601cd84-bc7a-4cd0-8055-e85fefa8225e-prod.lovable.cloud}
       - SUPABASE_PUBLISHABLE_KEY=${SUPABASE_PUBLISHABLE_KEY:-sb_publishable_uLbxeQ511N97wrXhbKZjtg_SVTwQlqC}
       - VITE_SUPABASE_URL=${VITE_SUPABASE_URL:-https://c--8601cd84-bc7a-4cd0-8055-e85fefa8225e-prod.lovable.cloud}
