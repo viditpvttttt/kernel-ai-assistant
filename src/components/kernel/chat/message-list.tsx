@@ -6,6 +6,7 @@ import { Streamdown } from "streamdown";
 import type { ChatMessage } from "@/lib/agent";
 import { Button } from "@/components/ui/button";
 import { KernelMark } from "@/components/kernel/logo";
+import { Orb } from "@/components/kernel/fx/orb";
 import { TextRoll } from "@/components/kernel/fx/text-roll";
 import { cn } from "@/lib/utils";
 
@@ -116,27 +117,7 @@ export function MessageList({
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="flex flex-1 flex-col items-center justify-center gap-8 px-6 text-center"
       >
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0, rotateY: -20 }}
-          animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-          transition={{ delay: 0.15, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          style={{ transformStyle: "preserve-3d", perspective: 800 }}
-          className="relative"
-        >
-          <motion.div
-            animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.35, 0.2] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute inset-0 -z-10 blur-3xl"
-          >
-            <KernelMark className="h-10 w-20" />
-          </motion.div>
-          <motion.div
-            animate={{ y: [0, -4, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <KernelMark className="h-10 w-20" />
-          </motion.div>
-        </motion.div>
+        <Orb size={120} />
 
         <motion.div
           initial={{ opacity: 0, y: 12 }}
