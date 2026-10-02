@@ -284,30 +284,6 @@
   animation: kernel-conic 6s linear infinite;
 }
 
-/* Border beam — traveling light streak along a rectangular perimeter. */
-@keyframes border-beam-travel {
-  0% {
-    offset-distance: 0%;
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    offset-distance: 100%;
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  [style*="border-beam-travel"] {
-    animation: none !important;
-  }
-}
-
 /* Depth utilities for the 3D landing sections. */
 @utility scene-3d {
   perspective: 1000px;

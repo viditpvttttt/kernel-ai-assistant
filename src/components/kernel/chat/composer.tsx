@@ -2,7 +2,6 @@ import { ArrowUp, ChevronDown, Mic, Paperclip, Plus, Square, X } from "lucide-re
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-import { VoiceVisualizer } from "@/components/kernel/fx/voice-visualizer";
 import type { ChatAttachment } from "@/lib/agent";
 import { MODEL_PRESETS, type ProviderPreset } from "@/lib/kernel-store";
 import { Button } from "@/components/ui/button";
@@ -150,18 +149,7 @@ export function Composer({
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ ...springSnappy, delay: 0.1 }}
-      className={cn(
-        "relative isolate rounded-3xl border bg-card/80 p-2.5 shadow-[0_8px_32px_-12px_var(--ink)] backdrop-blur-xl transition-all duration-300 focus-within:border-foreground/20 focus-within:shadow-[0_16px_48px_-16px_var(--ink)]",
-        streaming ? "border-foreground/20" : "border-border/60",
-      )}
-    >
-      {/* Border beam — animated conic ring visible while streaming */}
-      {streaming && (
-        <span
-          aria-hidden
-          className="conic-spin pointer-events-none absolute inset-0 -z-10 rounded-3xl opacity-60"
-        />
-      )}
+      className="rounded-3xl border border-border/60 bg-card/80 p-2.5 shadow-[0_8px_32px_-12px_var(--ink)] backdrop-blur-xl transition-all duration-300 focus-within:border-foreground/20 focus-within:shadow-[0_16px_48px_-16px_var(--ink)]"
       <AnimatePresence>
         {attachments.length > 0 && (
           <motion.div
@@ -271,37 +259,29 @@ export function Composer({
             </DropdownMenu>
           )}
 
-          {/* Voice input — speech-to-text with animated visualizer */}
+          {/* Voice input — speech-to-text */}
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} transition={springSnappy}>
-            {listening ? (
-              <div className="flex h-8 items-center gap-2 rounded-full bg-red-500/10 px-3 text-red-500">
-                <VoiceVisualizer active bars={4} className="h-4 w-6" />
-                <motion.span
-                  className="absolute inset-0 rounded-full bg-red-500/10"
-                  animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0, 0.4] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <button
-                  type="button"
-                  onClick={toggleListening}
-                  className="relative"
-                  aria-label="Stop listening"
-                >
-                  <Square className="h-3.5 w-3.5 fill-current" />
-                </button>
-              </div>
-            ) : (
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 rounded-full text-muted-foreground"
-                onClick={toggleListening}
-                aria-label="Start voice input"
-              >
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className={cn("relative h-8 w-8 rounded-full text-muted-foreground", listening && "text-red-500")}
+              onClick={toggleListening}
+              aria-label={listening ? "Stop listening" : "Start voice input"}
+            >
+              {listening ? (
+                <>
+                  <motion.span
+                    className="absolute inset-0 rounded-full bg-red-500/20"
+                    animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <Square className="relative h-4 w-4" />
+                </>
+              ) : (
                 <Mic className="h-4 w-4" />
-              </Button>
-            )}
+              )}
+            </Button>
           </motion.div>
 
           <motion.div layout transition={springSnappy}>
