@@ -150,6 +150,7 @@ export function Composer({
       animate={{ opacity: 1, y: 0 }}
       transition={{ ...springSnappy, delay: 0.1 }}
       className="rounded-3xl border border-border/60 bg-card/80 p-2.5 shadow-[0_8px_32px_-12px_var(--ink)] backdrop-blur-xl transition-all duration-300 focus-within:border-foreground/20 focus-within:shadow-[0_16px_48px_-16px_var(--ink)]"
+    >
       <AnimatePresence>
         {attachments.length > 0 && (
           <motion.div
